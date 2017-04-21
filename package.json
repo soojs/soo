@@ -13,8 +13,8 @@
     "koa-route": "^2.4.2",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
-    "mysql": "^2.11.1",
-    "sequelize": "^3.23.4",
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.4",
     "uuid": "^3.0.1",
     "winston": "^2.2.0"
   },
