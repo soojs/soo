@@ -3,9 +3,11 @@ var config = {
     debug: true,
     // 数据库配置
     db_host: 'localhost',
-    db_database: 'fe_blog',
-    db_username: 'fe.blog',
-    db_password: '123qwe!@#',
+    db_database: 'feblog',
+    db_username: 'root',
+    db_password: ''
+    // db_username: 'fe.blog',
+    // db_password: '123qwe!@#',
 }
 
 module.exports = config;

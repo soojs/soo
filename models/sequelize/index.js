@@ -1,10 +1,15 @@
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
+const cls = require('continuation-local-storage')
+const namespace = cls.createNamespace('fx-blog')
+
+Sequelize.cls = namespace
 
 const config = require('../../config')
 
 console.log('database=%s, username=%s, password=%s', config.db_database, config.db_username, config.db_password)
+
 const client = new Sequelize(config.db_database, config.db_username, config.db_password, {
     host: config.db_host,
     dialect: 'mysql',
@@ -15,23 +20,23 @@ const client = new Sequelize(config.db_database, config.db_username, config.db_p
     }
 })
 
-const models = {}
+const entities = {}
 
 fs
-    .readdirSync(__dirname + '/models')
+    .readdirSync(__dirname + '/entity')
     .filter((file) => {
         return (file.indexOf('.') !== 0) && (file !== 'index.js')
     })
     .forEach((file) => {
-        let model = client.import(path.join(__dirname + '/models', file))
-        models[model.name] = model
+        let model = client.import(path.join(__dirname + '/entity', file))
+        entities[model.name] = model
     })
 
-Object.keys(models).forEach((modelName) => {
-    if (models[modelName].options.hasOwnProperty('associate')) {
-        models[modelName].options.associate(models)
-    }
-})
+// Object.keys(entities).forEach((modelName) => {
+//     if (entities[modelName].options.hasOwnProperty('associate')) {
+//         entities[modelName].options.associate(entities)
+//     }
+// })
 
-module.exports = models
+module.exports = entities
 module.exports.client = client
