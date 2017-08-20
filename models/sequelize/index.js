@@ -1,22 +1,22 @@
 const fs = require('fs')
 const path = require('path')
+const config = require('config')
 const Sequelize = require('sequelize')
 const cls = require('continuation-local-storage')
 const namespace = cls.createNamespace('fx-blog')
 
-Sequelize.cls = namespace
+Sequelize.useCLS(namespace)
 
-const config = require('../../config')
+const dbConfig = config.get('db')
+console.log('host=%s, database=%s', dbConfig.host, dbConfig.database)
 
-console.log('database=%s, username=%s, password=%s', config.db_database, config.db_username, config.db_password)
-
-const client = new Sequelize(config.db_database, config.db_username, config.db_password, {
-    host: config.db_host,
+const client = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+    host: dbConfig.host,
     dialect: 'mysql',
     pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        idle: dbConfig.pool.idle
     }
 })
 

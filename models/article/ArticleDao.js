@@ -13,16 +13,22 @@ exports.create = function *(article) {
     let result = yield db.Article.create(article)
     return result
 }
-
 /**
  * 更新文章对象
  * @param {Object} article
  * @return {Object} updated article
  */
 exports.update = function *(article) {
+    let existArticle = yield db.Article.findById(article.id)
 
+    if (existArticle != null) {
+        existArticle.tags = article.tags
+        existArticle.title = article.title
+        existArticle.summary = article.summary
+    }
+
+    return existArticle
 }
-
 /**
  * 删除文章对象
  * @param {Number} articleId

@@ -17,15 +17,13 @@ module.exports = function(Sequelize, DataTypes) {
         },
         content: {
             type: DataTypes.TEXT,
-            allowNull: false,
-            defaultValue: ''
+            allowNull: true
         }
     }, {
         timestamps: false,
         paranoid: false,
         underscored: true,
         freezeTableName: true,
-        tableName: 'fx_article_content',
-        version: true
+        tableName: 'fx_article_content'
     })
 }

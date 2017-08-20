@@ -30,7 +30,6 @@ module.exports = function(Sequelize, DataTypes) {
         paranoid: false,
         underscored: true,
         freezeTableName: true,
-        tableName: 'fx_article_stat',
-        version: true
+        tableName: 'fx_article_stat'
     })
 }

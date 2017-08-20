@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>纷享销客</title>
+</head>
+<body>
+    {% for key, val in rows %}
+    <div class="blog-item">
+        <div class="blog-item-head">
+            {{ val.title }}
+        </div>
+        <div class="blog-item-body">
+            {{ val.summary }}
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
