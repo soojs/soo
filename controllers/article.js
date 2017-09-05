@@ -7,6 +7,9 @@ const list = exports.list = function *(next) {
         offset: this.params.offset
     })
 
+    let n = this.session.views || 0
+    this.session.views += 1
+    page.views = this.session.views
     this.body = yield render('list', page)
     yield next
 }

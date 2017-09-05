@@ -10,6 +10,16 @@ app.use(middlewares.logger())
 app.use(middlewares.responseTime())
 app.use(middlewares.compress())
 
+// koa-session
+const SessionConfig = {
+    key: 'sid',
+    maxAge: 'session',
+    httpOnly: true,
+    signed: true
+}
+app.keys = ['some secret hurr']
+app.use(middlewares.session(SessionConfig, app))
+
 // const apis = require('./apis')
 
 // app.use(middlewares.mount('/v1', apis.v1))
