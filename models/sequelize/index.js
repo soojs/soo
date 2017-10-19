@@ -17,7 +17,8 @@ const client = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.pass
         max: dbConfig.pool.max,
         min: dbConfig.pool.min,
         idle: dbConfig.pool.idle
-    }
+    },
+    operatorsAliases: false
 })
 
 const entities = {}

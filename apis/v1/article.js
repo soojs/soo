@@ -1,15 +1,32 @@
+const co = require('co')
 const parse = require('co-body')
 const services = require('../../services')
 
-const list = exports.list = function *(next) {
-    let page = yield services.ArticleService.getArticles({
-        limit: this.params.limit, 
-        offset: this.params.offset
-    })
+const list = exports.list = (ctx, next) => {
+    return co(function* () {
+        let page = yield services.ArticleService.getArticles({
+            limit: ctx.request.query.limit, 
+            offset: ctx.request.query.offset
+        })
 
-    this.body = page
-    yield next
+        return page
+    }).then((page) => {
+        ctx.body = page
+        return next()
+    }).catch((err) => {
+        return next(err)
+    })
 }
+
+// const list = exports.list = function *(next) {
+//     let page = yield services.ArticleService.getArticles({
+//         limit: this.params.limit, 
+//         offset: this.params.offset
+//     })
+
+//     this.body = page
+//     yield next
+// }
 
 const getById = exports.getById = function *(next) {
     let article = yield services.ArticleService.getArticleById(this.params.articleId)
