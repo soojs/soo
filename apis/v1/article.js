@@ -1,61 +1,42 @@
 const co = require('co')
-const parse = require('co-body')
 const services = require('../../services')
 
-const list = exports.list = (ctx, next) => {
-    return co(function* () {
-        let page = yield services.ArticleService.getArticles({
-            limit: ctx.request.query.limit, 
-            offset: ctx.request.query.offset
-        })
+const ArticleService = services.ArticleService
 
-        return page
-    }).then((page) => {
-        ctx.body = page
-        return next()
-    }).catch((err) => {
-        return next(err)
+const list = exports.list = co.wrap(function* (ctx, next) {
+    let page = yield ArticleService.getArticles({
+        limit: ctx.request.query.limit,
+        offset: ctx.request.query.offset
     })
-}
+    ctx.body = page
+    yield next()
+})
 
-// const list = exports.list = function *(next) {
-//     let page = yield services.ArticleService.getArticles({
-//         limit: this.params.limit, 
-//         offset: this.params.offset
-//     })
+const getById = exports.getById = co.wrap(function* (ctx, next) {
+    let article = yield ArticleService.getArticleById(ctx.params.articleId)
+    ctx.body = article
+    yield next()
+})
 
-//     this.body = page
-//     yield next
-// }
-
-const getById = exports.getById = function *(next) {
-    let article = yield services.ArticleService.getArticleById(this.params.articleId)
-
-    this.body = article
-    yield next
-}
-
-const create = exports.create = function *(next) {
-    let body = yield parse(this, { limit: '100kb' })
+const create = exports.create = co.wrap(function* (ctx, next) {
+    let body = ctx.request.body
     if (!body.title || !body.content) {
-        this.throw(400, 'Title or content cannot be empty')
+        ctx.throw(400, 'Title or content cannot be empty')
     }
-    let article = yield services.ArticleService.createArticle(body)
+    let article = yield ArticleService.createArticle(body)
+    ctx.body = article
+    yield next()
+})
 
-    this.body = article
-    yield next
-}
-
-const update = exports.update = function *(next) {
-    let body = yield parse(this, { limit: '100kb' })
+const update = exports.update = co.wrap(function* (ctx, next) {
+    let body = ctx.request.body
     if (!body.title || !body.content) {
-        this.throw(400, 'Title or content cannot be empty')
+        ctx.throw(400, 'Title or content cannot be empty')
     }
-    let article = yield services.ArticleService.updateArticle(body)
-
-    this.body = article
-    yield next
-}
+    let article = yield ArticleService.updateArticle(body)
+    ctx.body = article
+    yield next()
+})
 
 exports.register = function (router) {
     router.get('/api/v1/article/', list)

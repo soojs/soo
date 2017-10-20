@@ -7,15 +7,11 @@
     <title>纷享销客</title>
 </head>
 <body>
-    {% for key, val in rows %}
+    <% rows.forEach(function (item) { %>
     <div class="blog-item">
-        <div class="blog-item-head">
-            {{ val.title }}
-        </div>
-        <div class="blog-item-body">
-            {{ val.summary }}
-        </div>
+        <div class="blog-item-hd"><%= item.title %></div>
+        <div class="blog-item-bd"><%= item.summary %></div>
     </div>
-    {% endfor %}
+    <% }) %>
 </body>
 </html>

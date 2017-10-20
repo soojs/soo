@@ -8,6 +8,6 @@ const SESSION_CONFIG = {
     signed: true
 }
 
-module.exports = function(app) {
+module.exports = (app) => {
     return session(SESSION_CONFIG, app)
 }

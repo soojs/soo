@@ -14,17 +14,27 @@ if (config.get('debug') === true) {
     app.use(middlewares.logger())
 }
 app.use(middlewares.morgan())
-app.use(middlewares.responseTime())
-app.use(middlewares.compress())
+app.use(middlewares.bodyParser())
 app.use(middlewares.session(app))
+app.use(middlewares.render())
 
 // REST接口列表
 require('./apis/v1/article').register(router)
 // SSR
-// require('./controllers/article').register(router)
+require('./controllers/article').register(router)
 
 app.use(router.routes())
 app.use(router.allowedMethods())
+// error handler
+app.use(async (ctx, next) => {
+    try {
+        await next()
+    } catch (err) {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx);
+    }
+})
 
 // db
 //     .sync()
