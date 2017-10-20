@@ -1,3 +1,29 @@
 Q: 为什么要把`article_content`单独作为一个表？  
 A: http://nethub2.iteye.com/blog/1847420
 
+Q: 数据库的连接检查是否要影响到整个应用的启动（即数据库挂了，`app`要不要存活）？
+A:
+
+Q: 使用什么样的模版引擎跟适合开发？
+A:
+
+Q: 异步编程范式，用`async/await`好，还是用`yield function`？
+A:
+
+Q: 如何用业务分层架构，需要传统的JAVA系列分成：`DAO/SERVICE/CONTROLLER`吗？
+A:
+
+Q: 如何选择各种`koa`插件？
+A: 以下情况不使用或者自己重写：
+  + 已经`NOT MAINTAINED`，比如`swig`（有维护的版本）；
+  + 通不过安全检查的，执行`npm run check`；
+  + 不方便未来业务扩展的；
+
+Q: 如何选择`logger`与打印`logger`？
+A: 
+
+Q: 主站做SSR，如何存放前端后源代码与如何部署两者？
+A: 至少要满足部署互不影响
+
+参考：  
++ (JerryQu's blog)[https://imququ.com/post/readme.html]

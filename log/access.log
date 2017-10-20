@@ -2150,3 +2150,4 @@
 ::ffff:10.22.10.246 - - [20/Oct/2017:09:48:17 +0000] "GET / HTTP/1.1" 200 995 "-" "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
 ::ffff:10.22.10.246 - - [20/Oct/2017:09:48:33 +0000] "GET //api/v1/article/ HTTP/1.1" 404 9 "-" "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
 ::ffff:10.22.10.246 - - [20/Oct/2017:09:48:42 +0000] "GET /api/v1/article/ HTTP/1.1" 200 966 "-" "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
+::ffff:10.22.10.246 - - [20/Oct/2017:09:49:52 +0000] "GET /api/v1/article/1492696102 HTTP/1.1" 200 294 "-" "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"

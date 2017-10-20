@@ -2,4 +2,5 @@
 .vscode
 
 config/
+log/
 node_modules/
