@@ -1,16 +1,19 @@
 const Koa = require('koa')
 const Router = require('koa-router')
+const config = require('config')
 
 const db = require('./models').client
 const middlewares = require('./middlewares')
 
 const port = process.env.PORT || '8989'
-const app = new Koa()
 const router = new Router()
+const app = new Koa()
 
-app.keys = ['some secret hurr']
-app.use(middlewares.favicon())
-app.use(middlewares.logger())
+app.keys = [config.get('keys')]
+if (config.get('debug') === true) {
+    app.use(middlewares.logger())
+}
+app.use(middlewares.morgan())
 app.use(middlewares.responseTime())
 app.use(middlewares.compress())
 app.use(middlewares.session(app))
