@@ -21,7 +21,10 @@ const list = exports.list = co.wrap(function* (ctx, next) {
 
 const getById = exports.getById = co.wrap(function* (ctx, next) {
     let article = yield ArticleService.getArticleById(ctx.params.articleId)
-    yield ctx.render('article', article)
+    yield ctx.render('article.ejs', {
+        post: article,
+        timeFormat: util.timeFormat
+    })
 })
 
 exports.register = function (router) {
