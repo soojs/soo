@@ -1,6 +1,7 @@
 const co = require('co')
-const services = require('../services')
+const util = require('../lib/util')
 
+const services = require('../services')
 const ArticleService = services.ArticleService
 
 const list = exports.list = co.wrap(function* (ctx, next) {
@@ -11,7 +12,11 @@ const list = exports.list = co.wrap(function* (ctx, next) {
         limit: pageLimit, 
         offset: pageOffset
     })
-    yield ctx.render('index', page)
+    yield ctx.render('index.ejs', {
+        count: page.count,
+        rows: page.rows,
+        timeFormat: util.timeFormat
+    })
 })
 
 const getById = exports.getById = co.wrap(function* (ctx, next) {
@@ -20,6 +25,6 @@ const getById = exports.getById = co.wrap(function* (ctx, next) {
 })
 
 exports.register = function (router) {
-    router.get('/', list)
-    router.get('/article/:articleId', getById)
+    router.all('/', list)
+    router.all('/article/:articleId', getById)
 }

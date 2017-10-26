@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<%- include('_partial/head') %>
+<body>
+    <%- include('_partial/header') %>
+
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-sm-8 blog-main">
+                <% rows.forEach(function (item) { %>
+                <div class="blog-post">
+                    <h2 class="blog-post-title"><%= item.title %></h2>
+                    <p class="blog-post-meta"><%= timeFormat(item.createAt, 'yyyy-MM-dd HH:mm:ss') %> by <a href="#"><%= item.createBy %></a></p>
+                    <div class="blog-post-summary"><%= item.summary %></div>
+                </div>
+                <% }) %>
+            </div>
+            
+            <%- include('_partial/sidebar') %>
+        </div>
+    </main>
+
+    <%- include('_partial/footer') %>
+</body>
+</html>
