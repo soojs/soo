@@ -1,9 +1,9 @@
-#Server
+# 幸福六局
 
-### 
+## 关于来源
+缘起公司内前端团队的个人学习项目，觉得有必要促进大家学习的积极性和动手能力。所以从零开始开发该博客，并将通过该博客记录整个发展过程。
 
-
-### koa插件
+## koa插件
 
 * koa-static - https://github.com/koajs/static
 * koa-send - https://github.com/koajs/send
@@ -16,36 +16,20 @@
 * co-busboy -  [parser using co or koa](https://github.com/cojs/busboy.multipart)
 * koa-multer - https://github.com/koa-modules/multer 
 
-###日志工具
+**未来如果团队发展健康，是有可能自己造轮子。希望会有那么一天**
 
-* winston 
-    不同类型，级别的日志可以写到不同的日志文件
-    npmjs上看到此工具使用量更多，所以选择此日志工具
-    
-* morgan
+## 目录结构
+* apis: 开放数据接口层
+* bin: 一些可能会有用的命令，和服务器入口`www.js`
+* config: 博客参数配置
+* controllers: 页面入口层
+* doc: 开发文档，包括数据库设计和开发过程记录
+* lib: 一些公共库
+* log: 默认日志目录，可通过`config`目录的配置修改
+* middlewares: 中间件合集
+* public: 静态文件目录
+* services: 业务逻辑层
+* test: 测试代码
+* views: 页面模版
+* app.js 应用入口
 
-
-### sample
-* https://github.com/pselden/koa-demo.git
-
-
-### 目录结构
-* util: util
-* db:dao
-* model: domain
-* service:
-* web: router
-
-### 线上环境配置文件config/production.json
-
-```
-{
- "DB_HOST": "127.0.0.1",
-  "DB_DATABASE_NAME" : "fxblog-name",
-  "DB_USERNAME": "",
-  "DB_PASSWORD": "",
-  "DB_PORT": db-prot,
-  "SERVER_PORT": server-port,
-  "imgStoragePath": "/home/blog-static"
-}
-```
