@@ -1,10 +1,14 @@
 const fs = require('fs')
 const path = require('path')
+const config = require('config')
 const morgan = require('morgan')
 const rfs = require('rotating-file-stream')
 
 function proxyMorgan() {
-    const logDir = path.join(__dirname, '../log')
+    const configLogDir = config.get('app.logdir')
+    const logDir = /^\.{1,2}\//.test(configLogDir)
+        ? path.join(__dirname, configLogDir)
+        : configLogDir 
     fs.existsSync(logDir) || fs.mkdirSync(logDir)
 
     const accessLogSystem = rfs('access.log', {
