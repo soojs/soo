@@ -1,19 +1,29 @@
 const co = require('co')
+const bcrypt = require('bcrypt')
 
+const Const = require('../common/const')
+const ServiceError = require('../common/ServiceError')
 const models = require('../models')
 
 exports._createUser = function *(user) {
+    let existed = yield this.getUserByUsername(user.username)
+    if (existed && existed.id > 0) {
+        throw new ServiceError(Const.ERROR.USER_EXIST, 'User existed')
+    }
+    let encryptedPassword = yield bcrypt.hash(user.password, 10)
     let transientUser = {
         username: user.username,
-        password: user.password,
-        salt: user.salt,
+        password: encryptedPassword,
+        salt: '',
         nickname: user.nickname,
         roles: user.roles,
-        createBy: article.createBy
+        createBy: user.createBy
     }
     let persistentUser = yield models.UserAccount.create(transientUser)
     user = persistentUser.get({ plain: true })
 
+    delete user.password
+    delete user.salt
     return user
 }
 /**
@@ -41,5 +51,5 @@ exports.getUserByUsername = function *(username) {
         attributes: ['id', 'username', 'nickname', 'createAt', 'updateAt']
     })
     
-    return persistentUser || {}
+    return persistentUser
 }

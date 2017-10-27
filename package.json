@@ -9,6 +9,10 @@
     "prod": "cross-env PORT=8989 NODE_ENV=production node ./bin/www.js",
     "check": "nsp check --output default"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@git.coding.net/jerrydot0/fe-blog-www.git"
+  },
   "keywords": [
     "fxiaoke",
     "blog",
@@ -17,6 +21,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "config": "^1.27.0",
     "continuation-local-storage": "^3.2.0",
     "ejs": "^2.5.7",
