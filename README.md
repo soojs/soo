@@ -33,3 +33,14 @@
 * views: 页面模版
 * app.js 应用入口
 
+## URL模块
+| url path               | description |
+|------------------------|-------------|
+| /                      | 首页 |
+| /rss.html              | 订阅 |
+| /search.html           | 搜索 | 
+| /post/about.html       | 关于 |
+| /post/archives.html    | 归档 |
+| /post/series.html      | 专题 |
+| /post/:post-title.html | 文章详情页 |
+

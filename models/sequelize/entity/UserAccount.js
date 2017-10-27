@@ -31,21 +31,25 @@ module.exports = function(Sequelize, DataTypes) {
         },
         createBy: {
             type: DataTypes.STRING(255),
-            allowNull: true
+            allowNull: true,
+            field: 'create_by'
         },
         updateBy: {
             type: DataTypes.STRING(255),
-            allowNull: true
+            allowNull: true,
+            field: 'update_by'
         },
-        createTime: {
+        createAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Sequelize.NOW
+            defaultValue: DataTypes.NOW,
+            field: 'create_at'
         },
-        updateTime: {
+        updateAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Sequelize.NOW
+            defaultValue: DataTypes.NOW,
+            field: 'update_at'
         }
     }, {
         timestamps: false,
@@ -53,6 +57,6 @@ module.exports = function(Sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true,
         tableName: 'fx_user_account',
-        version: true
+        version: false
     })
 }

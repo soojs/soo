@@ -2,7 +2,7 @@ const Koa = require('koa')
 const Router = require('koa-router')
 const config = require('config')
 
-const db = require('./models').client
+const routers = require('./routers')
 const middlewares = require('./middlewares')
 
 const port = process.env.PORT || '8989'
@@ -21,32 +21,24 @@ app.use(middlewares.render())
 app.use(middlewares.minify())
 
 // REST接口列表
-require('./apis/v1/article').register(router)
+// require('./apis/v1/article').register(router)
 // SSR
-require('./controllers/article').register(router)
+// require('./controllers/article').register(router)
 
-app.use(router.routes())
-app.use(router.allowedMethods())
+app.use(routers.routes())
+// app.use(router.routes())
+// app.use(router.allowedMethods())
 // error handler
 app.use(async (ctx, next) => {
     try {
         await next()
     } catch (err) {
+        console.log(ctx._matchedRoute)
         ctx.status = err.status || 500
         ctx.body = err.message
         ctx.app.emit('error', err, ctx);
     }
 })
-
-// db
-//     .sync()
-//     .then(() => {
-//         app.listen(port)
-//         console.log('server is listening on port %s', port)
-//     })
-//     .catch((err) => {
-//         throw err
-//     })
 
 module.exports = app
     

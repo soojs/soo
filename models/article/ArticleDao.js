@@ -25,6 +25,7 @@ exports.update = function *(article) {
         existArticle.tags = article.tags
         existArticle.title = article.title
         existArticle.summary = article.summary
+        existArticle.updateTime = Date.now()
     }
 
     return existArticle

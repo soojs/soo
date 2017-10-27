@@ -1,9 +1,9 @@
 const co = require('co')
-const services = require('../../services')
 
+const services = require('../../services')
 const ArticleService = services.ArticleService
 
-const list = exports.list = co.wrap(function* (ctx, next) {
+exports.list = co.wrap(function* (ctx, next) {
     let page = yield ArticleService.getArticles({
         limit: ctx.request.query.limit,
         offset: ctx.request.query.offset
@@ -12,13 +12,13 @@ const list = exports.list = co.wrap(function* (ctx, next) {
     yield next()
 })
 
-const getById = exports.getById = co.wrap(function* (ctx, next) {
-    let article = yield ArticleService.getArticleById(ctx.params.articleId)
+exports.getById = co.wrap(function* (ctx, next) {
+    let article = yield ArticleService.getArticleById(ctx.params.id)
     ctx.body = article
     yield next()
 })
 
-const create = exports.create = co.wrap(function* (ctx, next) {
+exports.create = co.wrap(function* (ctx, next) {
     let body = ctx.request.body
     if (!body.title || !body.content) {
         ctx.throw(400, 'Title or content cannot be empty')
@@ -28,7 +28,7 @@ const create = exports.create = co.wrap(function* (ctx, next) {
     yield next()
 })
 
-const update = exports.update = co.wrap(function* (ctx, next) {
+exports.update = co.wrap(function* (ctx, next) {
     let body = ctx.request.body
     if (!body.title || !body.content) {
         ctx.throw(400, 'Title or content cannot be empty')
