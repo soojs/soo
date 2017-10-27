@@ -10,7 +10,7 @@
                 <% rows.forEach(function (item) { %>
                 <div class="blog-post">
                     <h2 class="blog-post-title"><%= item.title %></h2>
-                    <p class="blog-post-meta"><%= timeFormat(item.createAt, 'yyyy-MM-dd HH:mm:ss') %> by <a href="#"><%= item.createBy %></a></p>
+                    <p class="blog-post-meta"><%= helpers.mformat(item.createAt) %> by <a href="#"><%= item.createBy %></a></p>
                     <div class="blog-post-summary"><%= item.summary %></div>
                     <div class="blog-post-link"><a href="/article/<%= item.id %>">继续阅读 »</a></div>
                 </div>

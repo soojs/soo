@@ -9,7 +9,7 @@
             <div class="col-sm-8 blog-main">
                 <div class="blog-post">
                     <h2 class="blog-post-title"><%= post.title %></h2>
-                    <p class="blog-post-meta"><%= timeFormat(post.createAt, 'yyyy-MM-dd HH:mm:ss') %> by <a href="#"><%= post.createBy %></a></p>
+                    <p class="blog-post-meta"><%= helpers.mformat(post.createAt) %> by <a href="#"><%= post.createBy %></a></p>
                     <div class="blog-post-summary"><%= post.content %></div>
                 </div>
             </div>

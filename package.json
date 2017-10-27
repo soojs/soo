@@ -20,6 +20,7 @@
     "config": "^1.27.0",
     "continuation-local-storage": "^3.2.0",
     "ejs": "^2.5.7",
+    "html-minifier": "^3.5.6",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-compress": "^2.0.0",

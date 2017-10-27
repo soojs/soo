@@ -18,6 +18,7 @@ app.use(middlewares.helmet())
 app.use(middlewares.bodyParser())
 app.use(middlewares.session(app))
 app.use(middlewares.render())
+app.use(middlewares.minify())
 
 // REST接口列表
 require('./apis/v1/article').register(router)
