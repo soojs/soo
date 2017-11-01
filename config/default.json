@@ -1,0 +1,18 @@
+{
+    "app": {
+        "logdir": "/var/logs/fxblog/",
+        "keys": "some secret hurr"
+    },
+    "debug": true,
+    "db": {
+        "host": "localhost",
+        "database": "fx_blog",
+        "username": "root",
+        "password": "",
+        "pool": {
+            "min": 0,
+            "max": 5,
+            "idle": 10000
+        }
+    }
+}

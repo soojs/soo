@@ -1,6 +1,6 @@
 .DS_Store
 .vscode
 
-config/
+config/production.json
 log/
 node_modules/
