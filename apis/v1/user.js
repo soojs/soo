@@ -29,3 +29,30 @@ exports.create = co.wrap(function* (ctx, next) {
     }
     yield next()
 })
+
+exports.login = co.wrap(function* (ctx, next) {
+    let body = ctx.request.body
+    if (!body.username || !body.password) {
+        ctx.throw(400, 'Username or passsword cannot be empty')
+    }
+    try {
+        let user = yield UserService.checkPassword(body.username, body.password)
+        if (user) {
+            ctx.session.authenticated = true
+            ctx.body = {
+                code: Const.SUCCESS,
+                data: user || {}
+            }
+        } else {
+            ctx.body = {
+                code: Const.ERROR.USER_AUTH_FAIL,
+                data: null
+            }
+        }
+    } catch (e) {
+        ctx.body = {
+            code: e.code,
+            message: e.message
+        }
+    }
+})

@@ -1,7 +1,10 @@
 {
     "app": {
         "logdir": "/var/logs/fxblog/",
-        "keys": "some secret hurr"
+        "keys": "some secret hurr",
+        "admin": {
+            "context": "/__happy6__"
+        }
     },
     "debug": true,
     "db": {

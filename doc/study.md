@@ -27,3 +27,8 @@ A: 至少要满足部署互不影响
 
 参考：  
 + (JerryQu's blog)[https://imququ.com/post/readme.html]
+
+从这里可以学习的：
++ 编程范式
++ 性能优化
++ 职业规划
