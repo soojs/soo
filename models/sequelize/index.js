@@ -3,7 +3,7 @@ const path = require('path')
 const config = require('config')
 const Sequelize = require('sequelize')
 const cls = require('continuation-local-storage')
-const namespace = cls.createNamespace('fx-blog')
+const namespace = cls.createNamespace('bee-blog')
 
 Sequelize.useCLS(namespace)
 

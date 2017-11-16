@@ -19,7 +19,7 @@ module.exports = function(Sequelize, DataTypes) {
         paranoid: false,
         underscored: true,
         freezeTableName: true,
-        tableName: 'fx_tag',
-        version: true
+        tableName: 'bee_tag',
+        version: false
     })
 }

@@ -20,11 +20,6 @@ app.use(middlewares.session(app))
 app.use(middlewares.render())
 app.use(middlewares.minify())
 
-// REST接口列表
-// require('./apis/v1/article').register(router)
-// SSR
-// require('./controllers/article').register(router)
-
 app.use(routers.routes())
 // app.use(router.routes())
 // app.use(router.allowedMethods())

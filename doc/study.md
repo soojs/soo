@@ -1,4 +1,4 @@
-Q: 为什么要把`article_content`单独作为一个表？  
+Q: 为什么要把`post_content`单独作为一个表？  
 A: http://nethub2.iteye.com/blog/1847420
 
 Q: 数据库的连接检查是否要影响到整个应用的启动（即数据库挂了，`app`要不要存活）？

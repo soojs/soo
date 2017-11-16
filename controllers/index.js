@@ -1,2 +1,2 @@
-exports.post = require('./article')
+exports.post = require('./post')
 exports.admin = require('./admin')

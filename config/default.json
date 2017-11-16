@@ -1,6 +1,6 @@
 {
     "app": {
-        "logdir": "/var/logs/fxblog/",
+        "logdir": "/var/logs/beeblog/",
         "keys": "some secret hurr",
         "admin": {
             "context": "/__happy6__"
@@ -9,7 +9,7 @@
     "debug": true,
     "db": {
         "host": "localhost",
-        "database": "fx_blog",
+        "database": "bee_blog",
         "username": "root",
         "password": "",
         "pool": {

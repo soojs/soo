@@ -9,10 +9,10 @@ function auth(ctx, next) {
     }
 }
 
-router.get('/v1/post/', v1.article.list)
-router.get('/v1/post/:id', v1.article.getById)
-router.put('/v1/post', auth, v1.article.update)
-router.post('/v1/post', auth, v1.article.create)
+router.get('/v1/post/', v1.post.list)
+router.get('/v1/post/:id', v1.post.getById)
+router.put('/v1/post', auth, v1.post.update)
+router.post('/v1/post', auth, v1.post.create)
 
 router.get('/v1/user/:username', v1.user.getByUsername)
 router.post('/v1/user', v1.user.create)

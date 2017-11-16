@@ -56,7 +56,7 @@ module.exports = function(Sequelize, DataTypes) {
         paranoid: false,
         underscored: true,
         freezeTableName: true,
-        tableName: 'fx_user_account',
+        tableName: 'bee_user_account',
         version: false
     })
 }
