@@ -15,7 +15,7 @@ router.put('/v1/post', auth, v1.post.update)
 router.post('/v1/post', auth, v1.post.create)
 
 router.get('/v1/user/:username', v1.user.getByUsername)
-router.post('/v1/user', v1.user.create)
+router.post('/v1/user', auth, v1.user.create)
 router.post('/v1/user/login', v1.user.login)
 
 module.exports = router
