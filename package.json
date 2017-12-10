@@ -1,7 +1,7 @@
 {
-  "name": "gamma-blog",
+  "name": "bee-blog",
   "version": "0.0.1",
-  "description": "Server implementation of fe-blog",
+  "description": "A simple blog implementation based on koa2",
   "main": "app.js",
   "scripts": {
     "test": "mocha",
@@ -14,7 +14,6 @@
     "url": "git@git.coding.net/jerrydot0/fe-blog-www.git"
   },
   "keywords": [
-    "fxiaoke",
     "blog",
     "koa",
     "koajs"
