@@ -27,6 +27,10 @@ module.exports = (Sequelize, DataTypes) => {
             type: DataTypes.STRING(500),
             allowNull: false
         },
+        permalink: {
+            type: DataTypes.STRING(255),
+            allowNull: true
+        },
         status: {
             type: DataTypes.INTEGER,
             allowNull: false,

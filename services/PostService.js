@@ -1,106 +1,51 @@
 const co = require('co')
 const _  = require('lodash')
 
+const Const = require('../common/const')
+const helper = require('../lib/helper')
 const models = require('../models')
-
-/**
- * 摘要生成算法
- * @param {String} content
- * @return {String}
- */
-function _extractSummary(content) {
-    if (!content) {
-        return ''
-    }
-    let size = Math.min(content.length, 500)
-    return content.substring(0, size)
-}
-
-/**
- * 新建文章
- * @param {Object} post
- * @return {Object}
- */
-exports.createPost2Old = function (post) {
-    if (post === null || !post.content) {
-        throw new Error('Post or post content cannot be empty')
-    }
-
-    return models.client.transaction((t) => {
-        let now = Date.now()
-        let transientPost = {
-            tags: post.tags,
-            title: post.title,
-            summary: _extractSummary(post.content),
-            createBy: post.createBy,
-            status: 0,
-            createTime: now,
-            updateTime: now
-        }
-
-        return models.Post
-            .create(transientPost)
-            .then((persistentPost) => {
-                let transientContent = {
-                    postId: persistentPost.id,
-                    content: post.content
-                }
-                let transientStat = {
-                    postId: persistentPost.id,
-                    comment: 0,
-                    pageview: 0
-                }
-
-                return Promise
-                    .all([
-                        models.PostStat.create(transientStat),
-                        models.PostContent.create(transientContent)
-                    ])
-                    .then((results) => {
-                        let persistentStat = results[0]
-                        let persistentContent = results[1]
-
-                        let plainPost = persistentPost.get({ plain: true })
-                        plainPost.stat = persistentStat.get({ plain: true })
-                        plainPost.content = persistentContent.get({ plain: true })
-
-                        return plainPost
-                    })
-            })
-            .then((plainPost) => {
-                console.log(plainPost)
-                return plainPost
-            })
-    })
-}
 
 exports._createPost = function *(post) {
     let transientPost = {
         tags: post.tags,
+        desc: post.desc,
         title: post.title,
-        summary: _extractSummary(post.content),
+        summary: helper.extractSummary(post.content),
+        permalink: post.permalink,
+        createAt: post.createAt,
         createBy: post.createBy
     }
     let persistentPost = yield models.Post.create(transientPost)
 
-    let transientContent = {
-        postId: persistentPost.id,
-        content: post.content
-    }
     let transientStat = {
         postId: persistentPost.id,
         comment: 0,
         pageview: 0
     }
+    let transientMDContent = {
+        postId: persistentPost.id,
+        content: post.content,
+        type: Const.POST_FMT.MARKDOWN
+    }
+    let transientHTMLContent = {
+        postId: persistentPost.id,
+        content: helper.markdown2html(post.content),
+        type: Const.POST_FMT.HTML
+    }
     let associate = yield {
         stat: models.PostStat.create(transientStat),
-        content: models.PostContent.create(transientContent)
+        mdContent: models.PostContent.create(transientMDContent),
+        htmlContent: models.PostContent.create(transientHTMLContent)
     }
 
     post = persistentPost.get({ plain: true })
-    post.content = associate.content.get('content')
-    post.comment = associate.stat.get('comment')
-    post.pageview = associate.stat.get('pageview')
+    if (associate.htmlContent) {
+        post.content = associate.htmlContent.get('content')
+    }
+    if (associate.stat) {
+        post.comment = associate.stat.get('comment')
+        post.pageview = associate.stat.get('pageview')
+    }
 
     return post
 }
@@ -121,16 +66,30 @@ exports._updatePost = function *(post) {
     if (existPost != null) {
         existPost.tags = post.tags
         existPost.title = post.title
-        existPost.summary = _extractSummary(post.content)
+        existPost.summary = helper.extractSummary(post.content)
         existPost.updateBy = post.updateBy
         yield existPost.save()
 
-        let existContent = yield models.PostContent.findOne({ where: { postId: post.id } })
-        existContent.content = post.content
-        yield existContent.save()
+        let existMDContent = yield models.PostContent.findOne({
+            where: { postId: post.id, type: Const.POST_FMT.MARKDOWN }
+        })
+        if (existMDContent) {
+            existMDContent.content = post.content
+            yield existMDContent.save()
+        }
+
+        let existHTMLContent = yield models.PostContent.findOne({
+            where: { postId: post.id, type: Const.POST_FMT.HTML }
+        })
+        if (existHTMLContent) {
+            existHTMLContent.content = helper.markdown2html(post.content)
+            yield existHTMLContent.save()
+        }
 
         post = existPost.get({ plain: true })
-        post.content = existContent.get('content')
+        if (existHTMLContent) {
+            post.content = existHTMLContent.get('content')
+        }
 
         return post
     }
@@ -153,23 +112,67 @@ exports.updatePost = function *(post) {
 /**
  * 查询文章详情
  * @param {Number} postId
+ * @param {Number} type 
  * @return {Object}
  */
-exports.getPostById = function *(postId) {
+exports.getPostById = function *(postId, type = 0) {
     let persistentPost = yield models.Post.findById(postId)
 
     if (persistentPost !== null) {
         let associate = yield {
             stat: models.PostStat.findOne({ where: { postId: postId } }),
-            content: models.PostContent.findOne({ where: { postId: postId } })
+            content: models.PostContent.findOne({
+                where: { postId: postId, type: type } 
+            })
         }
         // 查询一次计数就加1 
         yield associate.stat.increment('pageview', { by: 1 })
 
         let post = persistentPost.get({ plain: true })
-        post.content = associate.content.get('content')
-        post.comment = associate.stat.get('comment')
-        post.pageview = associate.stat.get('pageview')
+        if (associate.content) {
+            post.content = associate.content.get('content')
+        }
+        if (associate.stat) {
+            post.comment = associate.stat.get('comment')
+            post.pageview = associate.stat.get('pageview')
+        }
+
+        return post
+    }
+
+    return null
+}
+/**
+ * 查询文章详情
+ * @param {String} permalink
+ * @param {Number} type 
+ * @return {Object}
+ */
+exports.getPostByPermalink = function *(permalink, type = 0) {
+    let persistentPost = yield models.Post.findOne({
+        where: { permalink: permalink }
+    })
+
+    if (persistentPost !== null) {
+        let associate = yield {
+            stat: models.PostStat.findOne({
+                where: { postId: persistentPost.id }
+            }),
+            content: models.PostContent.findOne({
+                where: { postId: persistentPost.id, type: type } 
+            })
+        }
+        // 查询一次计数就加1 
+        yield associate.stat.increment('pageview', { by: 1 })
+
+        let post = persistentPost.get({ plain: true })
+        if (associate.content) {
+            post.content = associate.content.get('content')
+        }
+        if (associate.stat) {
+            post.comment = associate.stat.get('comment')
+            post.pageview = associate.stat.get('pageview')
+        }
 
         return post
     }

@@ -19,6 +19,13 @@ exports.ROLES = {
     ADMIN: 'admin'
 }
 /**
+ * 文章格式
+ */
+exports.POST_FMT = {
+    MARKDOWN: 0,
+    HTML: 1
+}
+/**
  * 密码盐轮
  */
 exports.SALT_ROUNDS = 10

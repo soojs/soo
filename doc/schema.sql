@@ -7,6 +7,7 @@ CREATE TABLE `bee_post` (
     `desc` varchar(255) COMMENT '描述，用于seo的description',
     `title` varchar(255) NOT NULL COMMENT '标题',
     `summary` varchar(1000) COMMENT '摘要',
+    `permalink` varchar(255) COMMENT '永久链接',
     `status` tinyint(4) DEFAULT 0 COMMENT '状态：0草稿；1-发布',
     `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
     `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
