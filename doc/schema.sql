@@ -11,8 +11,8 @@ CREATE TABLE `bee_post` (
     `status` tinyint(4) DEFAULT 0 COMMENT '状态：0草稿；1-发布',
     `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
     `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
-    `create_at` datetime NOT NULL,
-    `update_at` datetime NOT NULL,
+    `create_at` datetime DEFAULT NULL COMMENT '创建时间',
+    `update_at` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章' AUTO_INCREMENT = 1492696102;
 
@@ -59,10 +59,13 @@ CREATE TABLE `bee_user_account` (
     `salt` varchar(64) NOT NULL COMMENT '加密盐',
     `nickname` varchar(64) NOT NULL COMMENT '用户昵称',
     `roles` varchar(255) NOT NULL COMMENT '角色列表',
+    `last_login_ip` varchar(64),
+    `last_login_time` datetime,
+    `status` tinyint(4) DEFAULT 0 COMMENT '状态',
     `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
     `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
-    `create_at` datetime NOT NULL,
-    `update_at` datetime NOT NULL,
+    `create_at` datetime DEFAULT NULL,
+    `update_at` datetime DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `udx_username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户' AUTO_INCREMENT = 1492696102;

@@ -1,105 +1,68 @@
-const co = require('co')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const Const = require('../common/const');
+const ServiceError = require('../common/ServiceError');
+const models = require('../models');
 
-const Const = require('../common/const')
-const ServiceError = require('../common/ServiceError')
-const models = require('../models')
+exports.create = async (user) => {
+  const existed = await this.getByUsername(user.username);
+  if (existed) {
+    throw new ServiceError(Const.ERROR.USER_EXIST, 'User existed');
+  }
+  const encryptedPassword = await bcrypt.hash(user.password, Const.SALT_ROUNDS);
+  const created = await models.User.create({
+    username: user.username,
+    password: encryptedPassword,
+    salt: '',
+    nickname: user.nickname || user.username,
+    roles: user.roles || Const.ROLES.ANONY,
+    createBy: user.createBy,
+    createAt: Date.now(),
+  });
+  return created === null ? null : created.get({ plain: true });
+};
 
-exports._createUser = function *(user) {
-    let existed = yield this.getUserByUsername(user.username)
-    if (existed && existed.id > 0) {
-        throw new ServiceError(Const.ERROR.USER_EXIST, 'User existed')
-    }
-    let encryptedPassword = yield bcrypt.hash(user.password, Const.SALT_ROUNDS)
-    let transientUser = {
-        username: user.username,
-        password: encryptedPassword,
-        salt: '',
-        nickname: user.nickname || user.username,
-        roles: user.roles || Const.ROLES.ANONY,
-        createBy: user.createBy
-    }
-    let persistentUser = yield models.UserAccount.create(transientUser)
-    user = persistentUser.get({ plain: true })
-    delete user.password
-    delete user.salt
-    return user
-}
-/**
- * 新建用户
- * @param {Object} user
- * @return {Object}
- */
-exports.createUser = function *(user) {
-    let created = yield models.client.transaction((t) => {
-        return co(this._createUser(user))
-    })
+exports.getByUsername = async (username) => {
+  const existed = await models.User.findOne({
+    where: { username },
+    attributes: ['id', 'username', 'nickname', 'createAt', 'updateAt'],
+  });
+  return existed === null ? null : existed.get({ plain: true });
+};
 
-    return created
-}
-/**
- * 查询用户（根据用户名）
- * @param {String} username
- * @return {Object}
- */
-exports.getUserByUsername = function *(username) {
-    let persistentUser = yield models.UserAccount.findOne({
-        where: {
-            username: username
-        },
-        attributes: ['id', 'username', 'nickname', 'createAt', 'updateAt']
-    })
-    
-    return persistentUser === null ? null : persistentUser.get({ plain: true })
-}
-/**
- * 更新用户密码，如果密码一致，更新成功并返回用户信息，否则返回`null`
- * @param {String} username
- * @param {String} oldPlainPassword
- * @param {String} newPlainPassword
- * @return {Object}
- * @throws {ServiceError} Const.ERROR.USER_NOT_FOUND
- */
-exports.updatePassword = function *(username, oldPlainPassword, newPlainPassword) {
-    let persistentUser = yield models.UserAccount.findOne({
-        where: {
-            username: username
-        }
-    })
-    if (persistentUser === null) {
-        throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found')
-    }
-    let res = yield bcrypt.compare(oldPlainPassword, persistentUser.get('password'))
-    if (res) {
-        encryptedPassword = yield bcrypt.hash(newPlainPassword, Const.SALT_ROUNDS)
-        persistentUser.set({ password: encryptedPassword })
-        persistentUser.save()
-        return persistentUser.get({ plain: true })
-    }
-    return null
-}
-/**
- * 检查用户密码，如果密码一致，返回用户信息，否则返回`null`
- * @param {String} username
- * @param {String} plainPassword
- * @return {Object}
- * @throws {ServiceError} Const.ERROR.USER_NOT_FOUND
- */
-exports.checkPassword = function *(username, plainPassword) {
-    let persistentUser = yield models.UserAccount.findOne({
-        where: {
-            username: username
-        }
-    })
-    if (persistentUser === null) {
-        throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found')
-    }
-    let res = yield bcrypt.compare(plainPassword, persistentUser.get('password'))
-    if (res) {
-        let user = persistentUser.get({ plain: true })
-        delete user.password
-        delete user.salt
-        return user
-    }
-    return null
-}
+exports.updatePassword = async (username, oldPlainPassword, newPlainPassword) => {
+  const existed = await models.User.findOne({
+    where: { username },
+  });
+  if (existed === null) {
+    throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found');
+  }
+  const res = await bcrypt.compare(oldPlainPassword, existed.password);
+  if (res) {
+    const encryptedPassword = await bcrypt.hash(newPlainPassword, Const.SALT_ROUNDS);
+    existed.password = encryptedPassword;
+    const updated = await existed.save();
+    const user = updated.get({ plain: true });
+    delete user.salt;
+    delete user.password;
+    return user;
+  }
+  return null;
+};
+
+exports.checkPassword = async (username, plainPassword) => {
+  const existed = await models.User.findOne({
+    where: { username },
+  });
+  if (existed === null) {
+    throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found');
+  }
+  const res = await bcrypt.compare(plainPassword, existed.password);
+  if (res) {
+    const user = existed.get({ plain: true });
+    delete user.salt;
+    delete user.password;
+    return user;
+  }
+
+  return null;
+};

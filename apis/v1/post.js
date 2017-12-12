@@ -1,39 +1,31 @@
-const co = require('co')
+const { PostService } = require('../../services');
+const { getApiResult } = require('../../lib/helper');
 
-const services = require('../../services')
-const PostService = services.PostService
+exports.list = async (ctx) => {
+  const { limit, offset } = ctx.request.query;
+  const page = await PostService.getPosts({ limit, offset });
+  ctx.body = getApiResult(page);
+};
 
-exports.list = co.wrap(function* (ctx, next) {
-    let page = yield PostService.getPosts({
-        limit: ctx.request.query.limit,
-        offset: ctx.request.query.offset
-    })
-    ctx.body = page
-    yield next()
-})
+exports.getById = async (ctx) => {
+  const post = await PostService.getById(ctx.params.id);
+  ctx.body = getApiResult(post);
+};
 
-exports.getById = co.wrap(function* (ctx, next) {
-    let post = yield PostService.getPostById(ctx.params.id)
-    ctx.body = post
-    yield next()
-})
+exports.create = async (ctx) => {
+  const { title, content } = ctx.request.body;
+  if (!title || !content) {
+    ctx.throw(400, 'Title or content cannot be empty');
+  }
+  const post = await PostService.create({ title, content });
+  ctx.body = getApiResult(post);
+};
 
-exports.create = co.wrap(function* (ctx, next) {
-    let body = ctx.request.body
-    if (!body.title || !body.content) {
-        ctx.throw(400, 'Title or content cannot be empty')
-    }
-    let post = yield PostService.createPost(body)
-    ctx.body = post
-    yield next()
-})
-
-exports.update = co.wrap(function* (ctx, next) {
-    let body = ctx.request.body
-    if (!body.title || !body.content) {
-        ctx.throw(400, 'Title or content cannot be empty')
-    }
-    let post = yield PostService.updatePost(body)
-    ctx.body = post
-    yield next()
-})
+exports.update = async (ctx) => {
+  const { title, content } = ctx.request.body;
+  if (!title || !content) {
+    ctx.throw(400, 'Title or content cannot be empty');
+  }
+  const post = await PostService.update(ctx.params.id, { title, content });
+  ctx.body = getApiResult(post);
+};

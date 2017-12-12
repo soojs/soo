@@ -1,13 +1,12 @@
-const session = require('koa-session')
+const session = require('koa-session');
 
-const SESSION_CONFIG = {
+module.exports = (app) => {
+  const func = session({
     key: 'sid',
     maxAge: 'session',
     overwrite: true,
     httpOnly: true,
-    signed: true
-}
-
-module.exports = (app) => {
-    return session(SESSION_CONFIG, app)
-}
+    signed: true,
+  }, app);
+  return func;
+};

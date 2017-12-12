@@ -8,7 +8,7 @@ Q: 使用什么样的模版引擎跟适合开发？
 A:
 
 Q: 异步编程范式，用`async/await`好，还是用`yield function`？
-A:
+A: 全部使用前者，一些需要针对`yield`的处理使用`co`和`blurbird`处理
 
 Q: 如何用业务分层架构，需要传统的JAVA系列分成：`DAO/SERVICE/CONTROLLER`吗？
 A:

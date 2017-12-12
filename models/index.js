@@ -1,1 +1,1 @@
-module.exports = require('./sequelize')
+module.exports = require('./sequelize');

@@ -1,21 +1,22 @@
 {
-    "app": {
-        "logdir": "/var/logs/beeblog/",
-        "keys": "some secret hurr",
-        "admin": {
-            "context": "/__happy6__"
-        }
-    },
-    "debug": true,
-    "db": {
-        "host": "localhost",
-        "database": "bee_blog",
-        "username": "root",
-        "password": "",
-        "pool": {
-            "min": 0,
-            "max": 5,
-            "idle": 10000
-        }
+  "app": {
+    "logdir": "/var/logs/beeblog/",
+    "keys": "some secret hurr",
+    "admin": {
+      "context": "/__happy6__"
     }
+  },
+  "debug": true,
+  "db": {
+    "host": "localhost",
+    "port": 3306,
+    "database": "bee_blog",
+    "username": "root",
+    "password": "",
+    "pool": {
+      "min": 0,
+      "max": 5,
+      "idle": 10000
+    }
+  }
 }

@@ -1,2 +1,2 @@
-exports.post = require('./post')
-exports.admin = require('./admin')
+exports.post = require('./post');
+exports.admin = require('./admin');
