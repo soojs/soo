@@ -18,7 +18,7 @@ exports.create = async (user) => {
     createBy: user.createBy,
     createAt: Date.now(),
   });
-  return created === null ? null : created.get({ plain: true });
+  return created.get({ plain: true });
 };
 
 exports.getByUsername = async (username) => {
@@ -37,16 +37,16 @@ exports.updatePassword = async (username, oldPlainPassword, newPlainPassword) =>
     throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found');
   }
   const res = await bcrypt.compare(oldPlainPassword, existed.password);
-  if (res) {
-    const encryptedPassword = await bcrypt.hash(newPlainPassword, Const.SALT_ROUNDS);
-    existed.password = encryptedPassword;
-    const updated = await existed.save();
-    const user = updated.get({ plain: true });
-    delete user.salt;
-    delete user.password;
-    return user;
+  if (!res) {
+    throw new ServiceError(Const.ERROR.USER_AUTH_FAIL, 'User auth fail');
   }
-  return null;
+  const encryptedPassword = await bcrypt.hash(newPlainPassword, Const.SALT_ROUNDS);
+  existed.password = encryptedPassword;
+  const updated = await existed.save();
+  const user = updated.get({ plain: true });
+  delete user.salt;
+  delete user.password;
+  return user;
 };
 
 exports.checkPassword = async (username, plainPassword) => {
@@ -57,12 +57,22 @@ exports.checkPassword = async (username, plainPassword) => {
     throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found');
   }
   const res = await bcrypt.compare(plainPassword, existed.password);
-  if (res) {
-    const user = existed.get({ plain: true });
-    delete user.salt;
-    delete user.password;
-    return user;
+  if (!res) {
+    throw new ServiceError(Const.ERROR.USER_AUTH_FAIL, 'User auth fail');
   }
-
-  return null;
+  const user = existed.get({ plain: true });
+  delete user.salt;
+  delete user.password;
+  return user;
+};
+/**
+ * 根据用户名删除用户帐户
+ * @param {string} username - 用户名
+ * @return {number} 删除的数量
+ */
+exports.remove = async (username) => {
+  const deleted = await models.User.destroy({
+    where: { username },
+  });
+  return deleted;
 };
