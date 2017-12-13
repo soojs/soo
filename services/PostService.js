@@ -26,16 +26,26 @@ exports.ncreate = async function ncreate(post) {
   };
   const htmlContnet = {
     postId: created.id,
-    content: post.content,
+    content: helper.markdown2html(post.content),
     type: Const.POST_FMT.HTML,
   };
-  const [createdStat] = await Promise.all([
+  const [createdStat, createdMdContent, createdHtmlContent] = await Promise.all([
     models.PostStat.create(stat),
     models.PostContent.create(mdContent),
     models.PostContent.create(htmlContnet),
   ]);
   if (createdStat) {
     created.stat = createdStat;
+  }
+  if (createdMdContent || createdHtmlContent) {
+    const contents = [];
+    if (createdMdContent) {
+      contents.push(createdMdContent);
+    }
+    if (createdHtmlContent) {
+      contents.push(createdHtmlContent);
+    }
+    created.contents = contents;
   }
   return created;
 };

@@ -1,3 +1,4 @@
+const debug = require('debug')('bee-blog:model');
 const fs = require('fs');
 const path = require('path');
 const config = require('config');
@@ -8,8 +9,7 @@ const namespace = cls.createNamespace('bee-blog');
 Sequelize.useCLS(namespace);
 
 const dbConfig = config.get('db');
-// TODO log
-// console.log('host=%s, database=%s', dbConfig.host, dbConfig.database);
+debug('Connecting to database: host=%s, database=%s', dbConfig.host, dbConfig.database);
 
 const client = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
   dialectOptions: {

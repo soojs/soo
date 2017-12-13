@@ -86,6 +86,9 @@ module.exports = (Sequelize, DataTypes) => {
         }
         return content;
       },
+      contents() {
+        return this.getDataValue('contents');
+      },
     },
     setterMethods: {
       stat(value) {
@@ -93,6 +96,9 @@ module.exports = (Sequelize, DataTypes) => {
       },
       content(value) {
         this.setDataValue('content', value);
+      },
+      contents(value) {
+        this.setDataValue('contents', value);
       },
     },
   });

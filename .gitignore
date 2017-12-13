@@ -1,6 +1,8 @@
 .DS_Store
 .vscode
+.nyc_output
 
 config/production.json
 log/
 node_modules/
+coverage/

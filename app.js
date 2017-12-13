@@ -25,7 +25,8 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    // console.log(ctx._matchedRoute)
+    // TODO 这里需要记录异常
+    // debug(ctx._matchedRoute)
     ctx.status = err.status || 500;
     ctx.body = err.message;
     ctx.app.emit('error', err, ctx);

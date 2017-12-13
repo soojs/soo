@@ -25,6 +25,12 @@ A:
 Q: 主站做SSR，如何存放前端后源代码与如何部署两者？
 A: 至少要满足部署互不影响
 
+Q: 性能平台
+A: https://node.console.aliyun.com/dashboard/apps/211/agents
+
+Q: 单元测试的选择
+A: 最终选择了`eggjs`推荐的`mocha`和`power-assert`，但是`power-assert`没有显示出应有的效果，为何？？
+
 参考：  
 + (JerryQu's blog)[https://imququ.com/post/readme.html]
 

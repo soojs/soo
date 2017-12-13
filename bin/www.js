@@ -48,3 +48,5 @@ function onListening() {
 httpServer.on('error', onError);
 httpServer.on('listening', onListening);
 httpServer.listen(port);
+
+module.exports = httpServer;
