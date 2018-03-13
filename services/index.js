@@ -1,2 +1,2 @@
-exports.PostService = require('./PostService');
-exports.UserService = require('./UserService');
+exports.PostService = require('./post');
+exports.UserService = require('./user');
