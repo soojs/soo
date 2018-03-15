@@ -1,5 +1,5 @@
 const assert = require('power-assert');
-const helper = require('../../lib/helper');
+const helper = require('../../app/lib/helper');
 
 describe('test/lib/help.test.js', () => {
   describe('#getApiResult', () => {

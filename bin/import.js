@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('yaml-front-matter');
 
-const models = require('../models');
-const { PostService } = require('../services');
+const models = require('../app/models');
+const { PostService } = require('../app/services');
 
 const args = process.argv.splice(2);
 args.forEach((item) => {

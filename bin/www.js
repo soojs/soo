@@ -2,7 +2,7 @@
 
 const debug = require('debug')('bee-blog:www');
 const http = require('http');
-const app = require('../app');
+const app = require('../app/app');
 
 const port = process.env.PORT || '8888';
 const httpServer = http.createServer(app.callback());

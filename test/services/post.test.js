@@ -1,6 +1,6 @@
 const assert = require('power-assert');
-const helper = require('../../lib/helper');
-const { PostService } = require('../../services');
+const helper = require('../../app/lib/helper');
+const { PostService } = require('../../app/services');
 
 describe('test/api/post.test.js', () => {
   before(() => {
