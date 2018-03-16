@@ -10,6 +10,7 @@ exports.ncreate = async function ncreate(post) {
     title: post.title,
     summary: helper.extractSummary(post.content),
     permalink: post.permalink,
+    status: Const.POST_STATUS.DRAFT,
     createBy: post.createBy,
     createAt: Date.now(),
   });
@@ -95,7 +96,39 @@ exports.update = async function update(id, post) {
   return updated.get({ plain: true });
 };
 
-exports.getById = async function getById(id, type = 0) {
+exports.publish = async function publish(id, publishBy) {
+  const existed = await models.Post.findById(id);
+  if (existed === null) {
+    return existed;
+  }
+  existed.status = Const.POST_STATUS.RELEASE;
+  existed.publishBy = publishBy;
+  existed.publishAt = Date.now();
+  const updated = await existed.save();
+  return updated.get({ plain: true });
+};
+
+exports.nremove = async function nremove(id) {
+  const result = await models.Post.destroy({
+    where: { id },
+  });
+  if (result > 0) {
+    await models.PostContent.destroy({
+      where: { postId: id },
+    });
+    await models.PostStat.destroy({
+      where: { postId: id },
+    });
+  }
+  return result;
+};
+
+exports.remove = async function remove(id) {
+  const result = await models.client.transaction(() => this.nremove(id));
+  return result;
+};
+
+exports.getById = async function getById(id, type = Const.POST_FMT.HTML) {
   const existed = await models.Post.findById(id, {
     include: [{
       model: models.User,
@@ -121,7 +154,7 @@ exports.getById = async function getById(id, type = 0) {
   return existed.get({ plain: true });
 };
 
-exports.getByPermalink = async function getByPermalink(permalink, type = 0) {
+exports.getByPermalink = async function getByPermalink(permalink, type = Const.POST_FMT.HTML) {
   const existed = await models.Post.findOne({
     include: [{
       model: models.User,
@@ -165,9 +198,11 @@ exports.getPosts = async function getPosts(pageArg) {
   const posts = { count: 0, rows: [] };
   if (page) {
     posts.count = page.count;
-    page.rows.forEach((item) => {
-      posts.rows.push(item.get({ plain: true }));
-    });
+    if (page.rows) {
+      page.rows.forEach((item) => {
+        posts.rows.push(item.get({ plain: true }));
+      });
+    }
   }
   return posts;
 };

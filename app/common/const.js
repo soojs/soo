@@ -26,6 +26,13 @@ exports.POST_FMT = {
   HTML: 1,
 };
 /**
+ * 文章状态
+ */
+exports.POST_STATUS = {
+  DRAFT: 0,
+  RELEASE: 1,
+};
+/**
  * 密码盐轮
  */
 exports.SALT_ROUNDS = 10;
