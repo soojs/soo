@@ -93,7 +93,7 @@ exports.nupdate = async function nupdate(id, post) {
 
 exports.update = async function update(id, post) {
   const updated = await models.client.transaction(() => this.nupdate(id, post));
-  return updated.get({ plain: true });
+  return !updated ? updated : updated.get({ plain: true });
 };
 
 exports.publish = async function publish(id, publishBy) {
