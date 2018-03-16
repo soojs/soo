@@ -31,6 +31,9 @@ A: https://node.console.aliyun.com/dashboard/apps/211/agents
 Q: 单元测试的选择
 A: 最终选择了`eggjs`推荐的`mocha`和`power-assert`，但是`power-assert`没有显示出应有的效果，为何？？
 
+Q: 为什么需要发布时间
+A: 更新时间是给内容编辑用的，用于比较距离上一次是否由更新过内容；但是发布时间一旦发布就不会变的；
+
 参考：  
 + (JerryQu's blog)[https://imququ.com/post/readme.html]
 

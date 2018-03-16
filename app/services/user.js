@@ -18,7 +18,7 @@ exports.create = async (user) => {
     createBy: user.createBy,
     createAt: Date.now(),
   });
-  return created.get({ plain: true });
+  return created;
 };
 
 exports.getByUsername = async (username) => {
@@ -26,7 +26,7 @@ exports.getByUsername = async (username) => {
     where: { username },
     attributes: ['id', 'username', 'nickname', 'createAt', 'updateAt'],
   });
-  return existed === null ? null : existed.get({ plain: true });
+  return existed;
 };
 
 exports.updatePassword = async (username, oldPlainPassword, newPlainPassword) => {

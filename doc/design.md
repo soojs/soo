@@ -5,5 +5,5 @@ desc: 博客的整体设计思路，包括数据库设计，代码结构设计�
 tags: bee-blog  
 author: jerrydot0  
 comments: false  
-permalink: design  
+# permalink: design  
 ---

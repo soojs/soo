@@ -7,14 +7,15 @@ CREATE TABLE `bee_post` (
     `desc` varchar(255) COMMENT '描述，用于seo的description',
     `title` varchar(255) NOT NULL COMMENT '标题',
     `summary` varchar(1000) COMMENT '摘要',
-    `permalink` varchar(255) COMMENT '永久链接',
+    `permalink` varchar(255) DEFAULT '' COMMENT '永久链接',
     `status` tinyint(4) DEFAULT 0 COMMENT '状态：0草稿；1-发布',
     `publish_at` datetime DEFAULT NULL COMMENT '发布时间',
     `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
     `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
     `create_at` datetime DEFAULT NULL COMMENT '创建时间',
     `update_at` datetime DEFAULT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `idx_permalink` (`permalink`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章' AUTO_INCREMENT = 1492696102;
 
 DROP TABLE IF EXISTS `bee_post_content`;

@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Const = require('../common/const');
+const ServiceError = require('../common/ServiceError');
 const helper = require('../lib/helper');
 const models = require('../models');
 
@@ -52,8 +53,17 @@ exports.ncreate = async function ncreate(post) {
 };
 
 exports.create = async function create(post) {
+  // 如果设置了永久链接，要判断唯一性
+  if (post.permalink) {
+    const existed = await models.Post.findOne({
+      where: { permalink: post.permalink },
+    });
+    if (existed) {
+      throw new ServiceError(Const.ERROR.POST_EXIST, 'Post existed');
+    }
+  }
   const created = await models.client.transaction(() => this.ncreate(post));
-  return created.get({ plain: true });
+  return created;
 };
 
 exports.nupdate = async function nupdate(id, post) {
@@ -93,7 +103,7 @@ exports.nupdate = async function nupdate(id, post) {
 
 exports.update = async function update(id, post) {
   const updated = await models.client.transaction(() => this.nupdate(id, post));
-  return !updated ? updated : updated.get({ plain: true });
+  return updated;
 };
 
 exports.publish = async function publish(id, publishBy) {
@@ -105,7 +115,7 @@ exports.publish = async function publish(id, publishBy) {
   existed.publishBy = publishBy;
   existed.publishAt = Date.now();
   const updated = await existed.save();
-  return updated.get({ plain: true });
+  return updated;
 };
 
 exports.nremove = async function nremove(id) {
@@ -151,7 +161,7 @@ exports.getById = async function getById(id, type = Const.POST_FMT.HTML) {
     });
   }
 
-  return existed.get({ plain: true });
+  return existed;
 };
 
 exports.getByPermalink = async function getByPermalink(permalink, type = Const.POST_FMT.HTML) {
@@ -178,7 +188,7 @@ exports.getByPermalink = async function getByPermalink(permalink, type = Const.P
     });
   }
 
-  return existed.get({ plain: true });
+  return existed;
 };
 
 exports.getPosts = async function getPosts(pageArg) {
@@ -195,14 +205,5 @@ exports.getPosts = async function getPosts(pageArg) {
     }],
   });
 
-  const posts = { count: 0, rows: [] };
-  if (page) {
-    posts.count = page.count;
-    if (page.rows) {
-      page.rows.forEach((item) => {
-        posts.rows.push(item.get({ plain: true }));
-      });
-    }
-  }
-  return posts;
+  return page;
 };

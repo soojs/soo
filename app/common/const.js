@@ -5,6 +5,7 @@ exports.ERROR = {
   USER_EXIST: 100403,
   USER_NOT_FOUND: 100404,
   USER_AUTH_FAIL: 100401,
+  POST_EXIST: 200403,
 };
 /**
  * 业务成功码

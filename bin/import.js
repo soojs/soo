@@ -19,7 +19,7 @@ args.forEach((item) => {
     const json = yaml.loadFront(result, 'content');
     co(function* create() {
       const created = yield PostService
-        .createPost({
+        .create({
           tags: json.tags,
           desc: json.desc,
           title: json.title,
@@ -28,7 +28,7 @@ args.forEach((item) => {
           createAt: json.date,
           createBy: json.author,
         });
-      return created;
+      return JSON.stringify(created);
     }).then((resp) => {
       console.log('导入成功：', resp); // eslint-disable-line no-console
       models.client.close();
