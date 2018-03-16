@@ -37,11 +37,6 @@ module.exports = (Sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
     },
-    publishBy: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      field: 'publish_by',
-    },
     publishAt: {
       type: DataTypes.DATE,
       allowNull: true,

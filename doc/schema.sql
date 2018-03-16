@@ -9,7 +9,6 @@ CREATE TABLE `bee_post` (
     `summary` varchar(1000) COMMENT '摘要',
     `permalink` varchar(255) COMMENT '永久链接',
     `status` tinyint(4) DEFAULT 0 COMMENT '状态：0草稿；1-发布',
-    `publish_by` varchar(255) DEFAULT NULL COMMENT '发布人',
     `publish_at` datetime DEFAULT NULL COMMENT '发布时间',
     `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
     `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
