@@ -11,6 +11,7 @@ if (config.get('debug') === true) {
   app.use(middlewares.logger());
 }
 app.use(middlewares.morgan());
+app.use(middlewares.static());
 app.use(middlewares.helmet());
 app.use(middlewares.bodyParser());
 app.use(middlewares.session(app));

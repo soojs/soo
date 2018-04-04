@@ -8,3 +8,4 @@ exports.session = require('./session');
 exports.morgan = require('./morgan');
 exports.render = require('./render');
 exports.minify = require('./minifier');
+exports.static = require('./static');
