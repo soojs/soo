@@ -1,6 +1,7 @@
 .DS_Store
 .vscode
 .nyc_output
+npm-debug.log
 
 config/production.json
 log/
