@@ -111,12 +111,12 @@ a:hover, a:active {
 .content {
   height: auto;
   float: right;
-  width: 60%;
+  width: 70%;
   margin-top: 60px;
 }
 
 .page-top {
-  width: 60%;
+  width: 70%;
   position: fixed;
   right: 0;
   z-index: 3;
@@ -170,7 +170,7 @@ a:hover, a:active {
 }
 
 .sidebar {
-  width: 40%;
+  width: 30%;
   -webkit-background-size: cover;
   background-size: cover;
   background-color: #fff;
@@ -184,7 +184,7 @@ a:hover, a:active {
 }
 .sidebar .logo-title {
   text-align: center;
-  padding-top: 240px;
+  padding-top: 100px;
 }
 .sidebar .logo-title .description {
   font-size: 14px;
@@ -335,7 +335,6 @@ a:hover, a:active {
 .pagination {
   margin: 30px;
   padding: 0px 0 56px 0;
-  border-bottom: 1px solid #f2f2f2;
 }
 .pagination ul {
   list-style: none;

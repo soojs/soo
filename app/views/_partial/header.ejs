@@ -1,17 +1,12 @@
 <header>
-    <div class="blog-masthead">
-        <div class="container">
-            <nav class="nav">
-                <a class="nav-link active" href="/">首页</a>
-                <a class="nav-link" href="/post/about">关于</a>
-            </nav>
-        </div>
+  <div class="logo-title">
+    <div class="title">
+      <img src="<%= app.logo %>" style="width:127px;">
+      <h3 title=""><a href="/"><%= app.name %></a></h3>
+      <div class="description">
+        <p><%= app.description %></p>
+      </div>
     </div>
-
-    <div class="blog-header">
-        <div class="container">
-            <h1 class="blog-title"><%= app.name %></h1>
-            <p class="lead blog-description"><%= app.description %></p>
-        </div>
-    </div>
+  </div>
 </header>
+

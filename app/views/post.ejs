@@ -1,23 +1,57 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <%- include('_partial/head') %>
 <body>
-    <%- include('_partial/header') %>
+  <%- include('_partial/sidebar') %>
 
-    <main role="main" class="container">
-        <div class="row">
-            <div class="col-sm-8 blog-main">
-                <div class="blog-post">
-                    <h2 class="blog-post-title"><%= post.title %></h2>
-                    <p class="blog-post-meta"><%= helpers.mformat(post.createAt) %> by <a href="#"><%= post.createBy %></a></p>
-                    <div class="blog-post-summary"><%- post.content %></div>
-                </div>
+  <main class="main">
+    <%- include('_partial/navbar') %>
+
+    <div class="autopagerize_page_element">
+      <div class="content">
+        <div class="post-page">
+          <div class="post animated fadeInDown">
+            <div class="post-title">
+              <h3><a href="/post/<%= post.id %>"><%= post.title %></a></h3>
             </div>
-            
-            <%- include('_partial/sidebar') %>
-        </div>
-    </main>
+            <div class="post-content">
+              <p><%- post.content %></p>
+            </div>
+            <div class="post-footer">
+              <div class="meta">
+                <div class="info">
+                  <i class="fa fa-sun-o"></i>
+                  <span class="date"><%= helpers.mformat(post.createAt) %></span>
+                  <% if (post.categories && post.tags && (post.categories.length + post.tags.length) > 0) { %>
+                  <i class="fa fa-tag"></i>
+                    <% post.categories.forEach(function (item) { %>
+                    <a href="/categories/<%= item.id %>/" title="<%- item.name %>" class="tag"><%- item.name %> </a>
+                    <% }) %>
+                    <% post.tags.forEach(function (item) { %>
+                      <a href="/tags/<%= item.id %>/" title="<%- item.name %>" class="tag"><%- item.name %> </a>
+                    <% }) %>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <%- include('_partial/footer') %>
+          <div class="share">
+            <div class="evernote">
+              <a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a>
+            </div>
+            <div class="weibo">
+              <a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a>
+            </div>
+            <div class="twitter">
+              <a href="http://twitter.com/home?status=,https://anatole.munen.cc/2013/12/24/中文測試/,Theme Anatole,中文測試,;" class="fa fa-twitter"></a>
+            </div>
+          </div>
+        
+          <%- include('_partial/pagination') %>
+        </div>
+      </div>
+    </div>    
+  </main>
 </body>
 </html>

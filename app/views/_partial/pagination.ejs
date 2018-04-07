@@ -1,0 +1,15 @@
+<div class="pagination">
+  <ul class="clearfix">
+    <% if (page && page.prev) { %>
+    <li class="prev pagbuttons">
+      <a role="navigation" href="<%= page.prev.link %>" title="<%- page.prev.title %>" class="btn"><%- page.prev.label %></a>
+    </li>
+    <% } %>
+    <% if (page && page.next) { %>
+    <li class="next pagbuttons">
+      <a role="navigation" href="<%= page.next.link %>" title="<%= page.next.title %>" class="btn"><%= page.next.label %></a>
+    </li>
+    <% } %>
+  </ul>
+</div>
+

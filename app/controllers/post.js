@@ -2,15 +2,24 @@ const { PostService } = require('../services');
 const Const = require('../common/const');
 
 exports.list = async (ctx) => {
+  const p = parseInt(ctx.request.query.p, 10) || 1;
   const pageLimit = 10;
-  const pageNumber = Math.max(parseInt(ctx.request.query.p, 10) || 1, 1);
+  const pageNumber = Math.max(p, 1);
   const pageOffset = (pageNumber - 1) * pageLimit;
   const page = await PostService.getPosts({
     limit: pageLimit,
     offset: pageOffset,
   });
 
-  await ctx.render('index', { count: page.count, rows: page.rows });
+  const pageData = {};
+  const pageCount = Math.floor(((page.count + pageLimit) - 1) / pageLimit);
+  if (p > 1) {
+    pageData.prev = { link: `/?p=${p - 1}`, label: '上一页' };
+  }
+  if (p < pageCount) {
+    pageData.next = { link: `/?p=${p + 1}`, label: '下一页' };
+  }
+  await ctx.render('index', { count: page.count, rows: page.rows, page: pageData });
 };
 
 exports.getById = async (ctx) => {
@@ -18,7 +27,15 @@ exports.getById = async (ctx) => {
   if (post === null) {
     ctx.throw(404);
   }
-  await ctx.render('post', { post });
+
+  const pageData = {};
+  if (post.prev) {
+    pageData.prev = { link: `/post/${post.prev.id}`, label: '上一篇', title: post.prev.title };
+  }
+  if (post.next) {
+    pageData.next = { link: `/post/${post.next.id}`, label: '下一篇', title: post.next.title };
+  }
+  await ctx.render('post', { post, page: pageData });
 };
 
 exports.getByPermalink = async (ctx) => {
@@ -27,5 +44,12 @@ exports.getByPermalink = async (ctx) => {
     ctx.throw(404);
   }
 
-  await ctx.render('post', { post });
+  const pageData = {};
+  if (post.prev) {
+    pageData.prev = { link: `/post/${post.prev.id}`, label: '上一篇', title: post.prev.title };
+  }
+  if (post.next) {
+    pageData.next = { link: `/post/${post.next.id}`, label: '下一篇', title: post.next.title };
+  }
+  await ctx.render('post', { post, page: pageData });
 };
