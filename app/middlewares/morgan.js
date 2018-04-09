@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('config');
 const morgan = require('morgan');
+const mkdirp = require('mkdirp');
 const rfs = require('rotating-file-stream');
 
 module.exports = () => {
@@ -10,7 +11,7 @@ module.exports = () => {
     ? path.join(__dirname, configLogDir)
     : configLogDir;
   if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir);
+    mkdirp.sync(logDir);
   }
 
   const accessLogSystem = rfs('access.log', {
