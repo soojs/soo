@@ -4,7 +4,7 @@ const debug = require('debug')('bee-blog:www');
 const http = require('http');
 const app = require('../app/app');
 
-const port = process.env.PORT || '8888';
+const port = process.env.PORT;
 const httpServer = http.createServer(app.callback());
 
 /**
@@ -43,6 +43,8 @@ function onListening() {
     ? `Pipe ${addr}`
     : `Port ${addr.port}`;
   debug(`Listening on ${bind}`);
+  // send the ready signal to PM2
+  // process.send('ready');
 }
 
 httpServer.on('error', onError);
