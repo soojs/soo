@@ -193,7 +193,7 @@ a:hover, a:active {
 .sidebar .logo-title .logo {
   margin: 0 auto;
 }
-.sidebar .logo-title .title h3 {
+.sidebar .logo-title .title h1 {
   text-transform: uppercase;
   font-size: 2rem;
   font-weight: bold;
@@ -688,7 +688,7 @@ a.btn {
     display: none;
   }
 
-  .share {
+  /* .share {
     display: grid;
-  }
+  } */
 }

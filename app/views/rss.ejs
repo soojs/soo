@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title><%= app.name %></title>
+    <link><%= app.url %></link>
+    <description><%= app.description %></description>
+    <atom:link href="<%= app.url %>/rss.xml" rel="self" />
+    <language>zh-cn</language>
+    <lastBuildDate><%= helpers.mformat(currentTime) %></lastBuildDate>
+    <% rows.forEach(function (item) { %>
+    <item>
+      <title><%= item.title %></title>
+      <link><%= app.url %>/post/<%= item.id %></link>
+      <description><![CDATA[
+        <%- item.content %>
+      ]]></description>
+      <pubDate><%= helpers.mformat(item.createAt) %></pubDate>
+      <guid><%= app.url %>/post/<%= item.id %></guid>
+    </item>
+    <% }) %>
+  </channel>
+</rss>

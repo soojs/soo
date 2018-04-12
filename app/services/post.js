@@ -4,7 +4,7 @@ const ServiceError = require('../common/ServiceError');
 const helper = require('../lib/helper');
 const models = require('../models');
 
-exports.ncreate = async function ncreate(post) {
+exports.ncreate = async (post) => {
   const created = await models.Post.create({
     tags: post.tags,
     desc: post.desc,
@@ -52,7 +52,7 @@ exports.ncreate = async function ncreate(post) {
   return created;
 };
 
-exports.create = async function create(post) {
+exports.create = async (post) => {
   // 如果设置了永久链接，要判断唯一性
   if (post.permalink) {
     const existed = await models.Post.findOne({
@@ -66,7 +66,7 @@ exports.create = async function create(post) {
   return created;
 };
 
-exports.nupdate = async function nupdate(id, post) {
+exports.nupdate = async (id, post) => {
   const existed = await models.Post.findById(id);
   if (existed === null) {
     return existed;
@@ -101,12 +101,12 @@ exports.nupdate = async function nupdate(id, post) {
   return updated;
 };
 
-exports.update = async function update(id, post) {
+exports.update = async (id, post) => {
   const updated = await models.client.transaction(() => this.nupdate(id, post));
   return updated;
 };
 
-exports.publish = async function publish(id, publishBy) {
+exports.publish = async (id, publishBy) => {
   const existed = await models.Post.findById(id);
   if (existed === null) {
     return existed;
@@ -118,7 +118,7 @@ exports.publish = async function publish(id, publishBy) {
   return updated;
 };
 
-exports.nremove = async function nremove(id) {
+exports.nremove = async (id) => {
   const result = await models.Post.destroy({
     where: { id },
   });
@@ -133,12 +133,12 @@ exports.nremove = async function nremove(id) {
   return result;
 };
 
-exports.remove = async function remove(id) {
+exports.remove = async (id) => {
   const result = await models.client.transaction(() => this.nremove(id));
   return result;
 };
 
-exports.getById = async function getById(id, type = Const.POST_FMT.HTML) {
+exports.getById = async (id, type = Const.POST_FMT.HTML) => {
   const existed = await models.Post.findById(id, {
     include: [{
       model: models.User,
@@ -164,7 +164,7 @@ exports.getById = async function getById(id, type = Const.POST_FMT.HTML) {
   return existed;
 };
 
-exports.getByPermalink = async function getByPermalink(permalink, type = Const.POST_FMT.HTML) {
+exports.getByPermalink = async (permalink, type = Const.POST_FMT.HTML) => {
   const existed = await models.Post.findOne({
     include: [{
       model: models.User,
@@ -191,19 +191,48 @@ exports.getByPermalink = async function getByPermalink(permalink, type = Const.P
   return existed;
 };
 
-exports.getPosts = async function getPosts(pageArg) {
-  let { limit, offset } = pageArg;
-  limit = Math.min(limit || 10, 10);
-  offset = Math.max(offset || 0, 0);
-  const page = await models.Post.findAndCountAll({
-    limit,
-    offset,
-    include: [{
+exports.getPosts = async ({ plimit, poffset }, includeUser = true) => {
+  const options = {
+    limit: Math.min(plimit || 10, 10),
+    offset: Math.max(poffset || 0, 0),
+    where: { status: Const.POST_STATUS.RELEASE },
+    order: [['publishAt', 'DESC']],
+    include: [],
+  };
+  if (includeUser) {
+    options.include.push({
       model: models.User,
       as: 'user',
       attributes: ['id', 'nickname'],
-    }],
-  });
-
+    });
+  }
+  const page = await models.Post.findAndCountAll(options);
   return page;
+};
+
+exports.getPostsByRss = async (includeUser = false, includeContents = true) => {
+  const options = {
+    limit: 20,
+    offset: 0,
+    where: { status: Const.POST_STATUS.RELEASE },
+    order: [[models.client.literal('publishAt DESC')]],
+    distinct: true,
+    include: [],
+  };
+  if (includeUser) {
+    options.include.push({
+      model: models.User,
+      as: 'user',
+      attributes: ['id', 'nickname'],
+    });
+  }
+  if (includeContents) {
+    options.include.push({
+      model: models.PostContent,
+      as: 'contents',
+      where: { type: Const.POST_FMT.HTML },
+    });
+  }
+  const list = await models.Post.findAll(options);
+  return list;
 };

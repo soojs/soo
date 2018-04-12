@@ -13,6 +13,8 @@ module.exports = () =>
     options: {
       // 全局应用信息
       app: appInfo,
+      // 默认导航模块
+      module: '-',
       // 全局工具方法
       helpers: {
         // 时间格式化

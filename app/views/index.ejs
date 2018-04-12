@@ -21,14 +21,14 @@
             <div class="meta">
               <div class="info">
                 <i class="fa fa-sun-o"></i>
-                <span class="date"><%= helpers.mformat(item.createAt) %></span>
+                <span class="date"><%= helpers.mformat(item.publishAt) %></span>
                 <% if (item.categories && item.tags && (item.categories.length + item.tags.length) > 0) { %>
                 <i class="fa fa-tag"></i>
                   <% items.categories.forEach(function (item) { %>
                   <a href="/categories/<%= item.id %>/" title="<%- item.name %>" class="tag"><%- item.name %> </a>
                   <% }) %>
                   <% items.tags.forEach(function (item) { %>
-                    <a href="/tags/<%= item.id %>/" title="<%- item.name %>" class="tag"><%- item.name %> </a>
+                  <a href="/tags/<%= item.id %>/" title="<%- item.name %>" class="tag"><%- item.name %> </a>
                   <% }) %>
                 <% } %>
               </div>

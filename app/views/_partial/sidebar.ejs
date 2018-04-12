@@ -1,9 +1,13 @@
 <div class="sidebar animated fadeInDown">
-    <%- include('header') %>
-    <ul class="social-links">
-        <li><a href="https://benwong.cn/index.xml"><i class="fa fa-rss"></i></a></li>
-        <li><a href="http://weibo.com/ben0036"><i class="fa fa-weibo"></i></a></li>
-        <li><a href="http://github.com/Ben02"><i class="fa fa-github"></i></a></li>
-    </ul>
-    <%- include('footer') %>
+  <%- include('header') %>
+  <ul class="social-links">
+    <li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li>
+    <% if (app.weibo) { %>
+    <li><a href="<%= app.weibo %>"><i class="fa fa-weibo"></i></a></li>
+    <% } %>
+    <% if (app.github) { %>
+    <li><a href="<%= app.github %>"><i class="fa fa-github"></i></a></li>
+    <% } %>
+  </ul>
+  <%- include('footer') %>
 </div>

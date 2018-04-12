@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "nyc mocha --recursive --exit",
-    "dev": "cross-env DEBUG=bee-blog:* PORT=8989 NODE_ENV=development node ./bin/www.js",
-    "prod": "cross-env PORT=8989 NODE_ENV=production node ./bin/www.js",
+    "dev": "cross-env DEBUG=bee-blog:* PORT=8889 NODE_ENV=development node ./bin/www.js",
+    "prod": "cross-env PORT=8888 NODE_ENV=production node ./bin/www.js",
     "check": "nsp check --output default",
     "lint": "eslint ."
   },

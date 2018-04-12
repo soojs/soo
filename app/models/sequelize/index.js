@@ -9,6 +9,9 @@ const namespace = cls.createNamespace('bee-blog');
 Sequelize.useCLS(namespace);
 
 const dbConfig = config.get('db');
+if (dbConfig.logging === undefined && process.env.NODE_ENV === 'development') {
+  dbConfig.logging = console.log; // eslint-disable-line no-console
+}
 debug('Connecting to database: host=%s, database=%s', dbConfig.host, dbConfig.database);
 
 const client = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
