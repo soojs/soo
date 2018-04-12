@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const Const = require('../common/const');
 const ServiceError = require('../common/ServiceError');
@@ -16,7 +17,7 @@ exports.create = async (user) => {
     nickname: user.nickname || user.username,
     roles: user.roles || Const.ROLES.ANONY,
     createBy: user.createBy,
-    createAt: Date.now(),
+    createAt: _.now(),
   });
   return created;
 };

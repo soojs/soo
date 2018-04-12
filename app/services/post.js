@@ -13,7 +13,7 @@ exports.ncreate = async (post) => {
     permalink: post.permalink,
     status: Const.POST_STATUS.DRAFT,
     createBy: post.createBy,
-    createAt: Date.now(),
+    createAt: _.now(),
   });
 
   const stat = {
@@ -77,7 +77,7 @@ exports.nupdate = async (id, post) => {
   existed.summary = helper.extractSummary(post.content);
   existed.permalink = post.permalink;
   existed.updateBy = post.updateBy;
-  existed.updateAt = Date.now();
+  existed.updateAt = _.now();
   const updated = await existed.save();
 
   const { Op } = models.client;
@@ -113,7 +113,7 @@ exports.publish = async (id, publishBy) => {
   }
   existed.status = Const.POST_STATUS.RELEASE;
   existed.publishBy = publishBy;
-  existed.publishAt = Date.now();
+  existed.publishAt = _.now();
   const updated = await existed.save();
   return updated;
 };
