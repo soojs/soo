@@ -18,5 +18,13 @@
       "max": 5,
       "idle": 10000
     }
+  },
+  "aliyun": {
+    "oss": {
+      "region": "oss-cn-shenzhen",
+      "bucket": "firstshare-co",
+      "accessKeyId": "LTAIzZKkdEzQ3jWD",
+      "accessKeySecret": "FiF1O6E3QRCa3MpJAGSBBfwJfofvdF"
+    }
   }
 }

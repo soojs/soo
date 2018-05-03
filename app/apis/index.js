@@ -18,4 +18,6 @@ router.get('/v1/user/:username', v1.user.getByUsername);
 router.post('/v1/user', auth, v1.user.create);
 router.post('/v1/user/login', v1.user.login);
 
+router.post('/v1/file/upload', v1.file.upload);
+
 module.exports = router;
