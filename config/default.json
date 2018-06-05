@@ -11,8 +11,8 @@
     "host": "localhost",
     "port": 3306,
     "database": "bee_blog",
-    "username": "root",
-    "password": "",
+    "username": "bee",
+    "password": "123Qwe!@#",
     "pool": {
       "min": 0,
       "max": 5,

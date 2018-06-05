@@ -112,13 +112,14 @@ exports.update = async (id, post) => {
   return updated;
 };
 
-exports.publish = async (id, publishBy) => {
+exports.publish = async (id) => {
   const existed = await models.Post.findById(id);
   if (existed === null) {
     return existed;
   }
   existed.status = Const.POST_STATUS.RELEASE;
-  existed.publishBy = publishBy;
+  // TODO 好像没这个字段？
+  // existed.publishBy = publishBy;
   existed.publishAt = _.now();
   const updated = await existed.save();
   return updated;

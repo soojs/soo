@@ -8,7 +8,7 @@ exports.list = async (ctx) => {
 };
 
 exports.getById = async (ctx) => {
-  const post = await PostService.getById(ctx.params.id);
+  const post = await PostService.getById(ctx.params.id, ctx.query.type);
   ctx.body = getApiResult(post);
 };
 
