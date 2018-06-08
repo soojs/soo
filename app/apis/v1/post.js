@@ -3,7 +3,7 @@ const { getApiResult } = require('../../lib/helper');
 
 exports.list = async (ctx) => {
   const { limit, offset } = ctx.request.query;
-  const page = await PostService.getPosts({ limit, offset });
+  const page = await PostService.getPosts({ limit, offset }, null);
   ctx.body = getApiResult(page);
 };
 
@@ -17,7 +17,7 @@ exports.create = async (ctx) => {
   if (!title || !content) {
     ctx.throw(400, 'Title or content cannot be empty');
   }
-  const post = await PostService.create({ title, content });
+  const post = await PostService.create(ctx.request.body);
   ctx.body = getApiResult(post);
 };
 
@@ -26,6 +26,6 @@ exports.update = async (ctx) => {
   if (!title || !content) {
     ctx.throw(400, 'Title or content cannot be empty');
   }
-  const post = await PostService.update(ctx.params.id, { title, content });
+  const post = await PostService.update(ctx.params.id, ctx.request.body);
   ctx.body = getApiResult(post);
 };

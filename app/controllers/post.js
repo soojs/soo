@@ -31,7 +31,7 @@ exports.archives = async (ctx) => {
   const page = await PostService.getPosts({
     limit: 1000, // 这里假设不会超过1000篇文章，很多了吧，超过就翻页吧呵呵
     offset: 0,
-  }, { includeUser: false });
+  }, undefined, { includeUser: false });
   const groups = {};
   if (page && page.rows) {
     page.rows.forEach((item) => {

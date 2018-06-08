@@ -198,15 +198,30 @@ exports.getByPermalink = async (permalink, type = Const.POST_FMT.HTML) => {
   return existed;
 };
 
-exports.getPosts = async ({ plimit, poffset }, includeUser = true) => {
+/**
+ * 分页获取post列表
+ * @param {object} param0 分页参数：`{plimit: 10, poffset: 0}`
+ * @param {object} filters 过滤参数：`{status: 0|1}`
+ * @param {object} includes 关联对象：`{includeUser: true|false}`
+ * @return {object} `{count:10, rows:[]}`
+ */
+exports.getPosts = async (
+  { plimit, poffset },
+  filters = { status: Const.POST_STATUS.RELEASE },
+  includes = { includeUser: true }) => {
   const options = {
     limit: Math.min(plimit || 10, 10),
     offset: Math.max(poffset || 0, 0),
-    where: { status: Const.POST_STATUS.RELEASE },
     order: [['publishAt', 'DESC']],
     include: [],
   };
-  if (includeUser) {
+  if (filters) {
+    options.where = {};
+    if (filters.status) {
+      options.where.status = filters.status;
+    }
+  }
+  if (includes && includes.includeUser) {
     options.include.push({
       model: models.User,
       as: 'user',
