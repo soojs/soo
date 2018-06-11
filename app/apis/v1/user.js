@@ -30,6 +30,7 @@ exports.login = async (ctx) => {
     if (user) {
       ctx.session.user = {
         uid: user.id,
+        username: user.username,
         nickname: user.nickname,
       };
       ctx.session.authenticated = true;

@@ -29,3 +29,13 @@ exports.update = async (ctx) => {
   const post = await PostService.update(ctx.params.id, ctx.request.body);
   ctx.body = getApiResult(post);
 };
+
+exports.publish = async (ctx) => {
+  const post = await PostService.publish(ctx.params.id);
+  ctx.body = getApiResult(post);
+};
+
+exports.remove = async (ctx) => {
+  const post = await PostService.remove(ctx.params.id);
+  ctx.body = getApiResult(post);
+};
