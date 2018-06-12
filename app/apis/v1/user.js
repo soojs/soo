@@ -2,6 +2,12 @@ const { UserService } = require('../../services');
 const { getApiResult } = require('../../lib/helper');
 const Const = require('../../common/const');
 
+exports.list = async (ctx) => {
+  const { limit, offset } = ctx.request.query;
+  const page = await UserService.getUsers({ limit, offset }, null);
+  ctx.body = getApiResult(page);
+};
+
 exports.getByUsername = async (ctx) => {
   const user = await UserService.getByUsername(ctx.params.username);
   ctx.body = getApiResult(user);

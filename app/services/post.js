@@ -208,7 +208,8 @@ exports.getByPermalink = async (permalink, type = Const.POST_FMT.HTML) => {
 exports.getPosts = async (
   { plimit, poffset },
   filters = { status: Const.POST_STATUS.RELEASE },
-  includes = { includeUser: true }) => {
+  includes = { includeUser: true },
+) => {
   const options = {
     limit: Math.min(plimit || 10, 10),
     offset: Math.max(poffset || 0, 0),
@@ -232,7 +233,10 @@ exports.getPosts = async (
   return page;
 };
 
-exports.getPostsByRss = async (includeUser = false, includeContents = true) => {
+exports.getPostsByRss = async (
+  includeUser = false,
+  includeContents = true,
+) => {
   const options = {
     limit: 20,
     offset: 0,

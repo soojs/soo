@@ -77,3 +77,26 @@ exports.remove = async (username) => {
   });
   return deleted;
 };
+
+exports.getUsers = async (
+  { plimit, poffset },
+  filters = { status: Const.USER_STATUS.NORMAL },
+) => {
+  const options = {
+    limit: Math.min(plimit || 10, 10),
+    offset: Math.max(poffset || 0, 0),
+    include: [],
+    attributes: [
+      'id', 'username', 'nickname', 'roles', 'lastLoginIp', 'lastLoginTime',
+      'status', 'createAt', 'createBy', 'updateAt', 'updateBy',
+    ],
+  };
+  if (filters) {
+    options.where = {};
+    if (filters.status) {
+      options.where.status = filters.status;
+    }
+  }
+  const page = await models.User.findAndCountAll(options);
+  return page;
+};

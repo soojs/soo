@@ -34,6 +34,13 @@ exports.POST_STATUS = {
   RELEASE: 1,
 };
 /**
+ * 用户状态
+ */
+exports.USER_STATUS = {
+  NORMAL: 0,
+  BLACKLIST: -1,
+};
+/**
  * 密码盐轮
  */
 exports.SALT_ROUNDS = 10;

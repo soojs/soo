@@ -16,6 +16,7 @@ router.put('/v1/post/:id', auth, v1.post.update);
 router.patch('/v1/post/:id', auth, v1.post.publish);
 router.delete('/v1/post/:id', auth, v1.post.remove);
 
+router.get('/v1/user/', v1.user.list);
 router.get('/v1/user/:username', v1.user.getByUsername);
 router.post('/v1/user', auth, v1.user.create);
 router.post('/v1/user/login', v1.user.login);
