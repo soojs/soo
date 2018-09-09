@@ -11,9 +11,10 @@ const { PostService } = require('../app/services');
 const args = process.argv.splice(2);
 args.forEach((item) => {
   const target = path.join(__dirname, item);
+  /* eslint-disable no-console */
   fs.readFile(target, { encoding: 'utf-8', flag: 'r' }, (error, result) => {
     if (error) {
-      console.error(error); // eslint-disable-line no-console
+      console.error(error);
       return;
     }
     const json = yaml.loadFront(result, 'content');
@@ -30,10 +31,10 @@ args.forEach((item) => {
         });
       return JSON.stringify(created);
     }).then((resp) => {
-      console.log('导入成功：', resp); // eslint-disable-line no-console
+      console.log('导入成功：', resp);
       models.client.close();
     }).catch((err) => {
-      console.error('导入失败：', err); // eslint-disable-line no-console
+      console.error('导入失败：', err);
       models.client.close();
     });
   });
