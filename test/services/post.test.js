@@ -6,17 +6,24 @@ const { PostService } = require('../../app/services');
 describe('test/api/post.test.js', () => {
   const tempPostTitle = '您好啊，title';
   const tempPostContent = '这是**测试**，content';
-  const tempPostPermalink = 'test';
 
   before(async () => {
     this.cache = [];
-    // 插入一个备用数据
-    const created = await PostService.create({
+    // 插入一个发布数据
+    const published = await PostService.create({
       title: tempPostTitle,
       content: tempPostContent,
-      permalink: tempPostPermalink,
+      permalink: 'test',
     });
-    this.cache.push(created);
+    await PostService.publish(published.id);
+    this.cache.push(published);
+
+    // 插入一个未发布数据
+    const unpublish = await PostService.create({
+      title: tempPostTitle,
+      content: tempPostContent,
+    });
+    this.cache.push(unpublish);
   });
   after(async () => {
     // 删除插入的备用数据
@@ -24,6 +31,16 @@ describe('test/api/post.test.js', () => {
       await PostService.remove(post.id);
     }));
     delete this.cache;
+  });
+
+  describe('#getById', () => {
+    it('should return the existed data and has no meta for unpublished data', async () => {
+      const tempPostId = this.cache[1].id;
+
+      const post = await PostService.getById(tempPostId);
+      assert(post != null);
+      assert(post.meta === null);
+    });
   });
 
   describe('#getById', () => {
@@ -44,6 +61,8 @@ describe('test/api/post.test.js', () => {
 
   describe('#getByPermalink', () => {
     it('should return the existed data and increase pageview count', async () => {
+      const tempPostPermalink = this.cache[0].permalink;
+
       const post1 = await PostService.getByPermalink(tempPostPermalink);
       assert(post1 !== null);
       assert(post1.meta !== null);
@@ -79,12 +98,6 @@ describe('test/api/post.test.js', () => {
       const created = await PostService.create(post);
       tempPostId = created.id;
 
-      // assert html content
-      const post1 = await PostService.getById(tempPostId);
-      assert(post1 !== null);
-      assert(post1.title === post.title);
-      assert(post1.content === helper.markdown2html(post.content));
-
       // assert markdown content
       const post2 = await PostService.getById(tempPostId, Const.POST_FMT.MARKDOWN);
       assert(post2 !== null);
@@ -114,7 +127,9 @@ describe('test/api/post.test.js', () => {
       const post1 = await PostService.getById(tempPostId);
       assert(post1 !== null);
       assert(post1.title === post.title);
-      assert(post1.content === helper.markdown2html(post.content));
+      if (post1.content) {
+        assert(post1.content === helper.markdown2html(post.content));
+      }
 
       // assert markdown content
       const post2 = await PostService.getById(tempPostId, Const.POST_FMT.MARKDOWN);
