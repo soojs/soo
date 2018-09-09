@@ -72,8 +72,8 @@ module.exports = (Sequelize, DataTypes) => {
     tableName: 'bee_post',
     version: false,
     getterMethods: {
-      stat() {
-        return this.getDataValue('stat');
+      meta() {
+        return this.getDataValue('meta');
       },
       content() {
         let content = this.getDataValue('content');
@@ -96,8 +96,8 @@ module.exports = (Sequelize, DataTypes) => {
       },
     },
     setterMethods: {
-      stat(value) {
-        this.setDataValue('stat', value);
+      meta(value) {
+        this.setDataValue('meta', value);
       },
       content(value) {
         this.setDataValue('content', value);
@@ -117,8 +117,8 @@ module.exports = (Sequelize, DataTypes) => {
       as: 'contents',
       foreignKey: 'postId',
     });
-    Post.hasOne(models.PostStat, {
-      as: 'stat',
+    Post.hasOne(models.PostMeta, {
+      as: 'meta',
       foreignKey: 'postId',
     });
   };

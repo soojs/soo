@@ -27,14 +27,15 @@ CREATE TABLE `bee_post_content` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章内容' AUTO_INCREMENT = 19491001;
 
-DROP TABLE IF EXISTS `bee_post_stat`;
-CREATE TABLE `bee_post_stat` (
+DROP TABLE IF EXISTS `bee_post_meta`;
+CREATE TABLE `bee_post_meta` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `post_id` bigint(20) NOT NULL COMMENT '文章ID',
+  `like` int DEFAULT 0 COMMENT '文章喜欢总数',
   `comment` int DEFAULT 0 COMMENT '文章评论总数',
   `pageview` int DEFAULT 0 COMMENT '文章阅读总数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章统计' AUTO_INCREMENT = 19491001;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章元数据' AUTO_INCREMENT = 19491001;
 
 DROP TABLE IF EXISTS `bee_tag`;
 CREATE TABLE `bee_tag` (
@@ -61,8 +62,6 @@ CREATE TABLE `bee_user_account` (
   `salt` varchar(64) NOT NULL COMMENT '加密盐',
   `nickname` varchar(64) NOT NULL COMMENT '用户昵称',
   `roles` varchar(255) NOT NULL COMMENT '角色列表',
-  `last_login_ip` varchar(64),
-  `last_login_time` datetime,
   `status` tinyint(4) DEFAULT 0 COMMENT '状态',
   `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
   `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',

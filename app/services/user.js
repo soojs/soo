@@ -87,7 +87,7 @@ exports.getUsers = async (
     offset: Math.max(poffset || 0, 0),
     include: [],
     attributes: [
-      'id', 'username', 'nickname', 'roles', 'lastLoginIp', 'lastLoginTime',
+      'id', 'username', 'nickname', 'roles',
       'status', 'createAt', 'createBy', 'updateAt', 'updateBy',
     ],
   };

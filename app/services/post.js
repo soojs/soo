@@ -22,8 +22,9 @@ exports.ncreate = async (post) => {
   //      草稿创建与保存操作带来的大量读写；
   //      第一版的设计是所有相关的数据都一起创建，虽然针对博客这种写少读多的业务可以这么干，
   //      但是还是可以用这种方式优化设计
-  const stat = {
+  const meta = {
     postId: created.id,
+    like: 0,
     comment: 0,
     pageview: 0,
   };
@@ -37,13 +38,13 @@ exports.ncreate = async (post) => {
     content: helper.markdown2html(post.content),
     type: Const.POST_FMT.HTML,
   };
-  const [createdStat, createdMdContent, createdHtmlContent] = await Promise.all([
-    models.PostStat.create(stat),
+  const [createdMeta, createdMdContent, createdHtmlContent] = await Promise.all([
+    models.PostMeta.create(meta),
     models.PostContent.create(mdContent),
     models.PostContent.create(htmlContnet),
   ]);
-  if (createdStat) {
-    created.stat = createdStat;
+  if (createdMeta) {
+    created.meta = createdMeta;
   }
   if (createdMdContent || createdHtmlContent) {
     const contents = [];
@@ -133,7 +134,7 @@ exports.nremove = async (id) => {
     await models.PostContent.destroy({
       where: { postId: id },
     });
-    await models.PostStat.destroy({
+    await models.PostMeta.destroy({
       where: { postId: id },
     });
   }
@@ -156,13 +157,13 @@ exports.getById = async (id, type = Const.POST_FMT.HTML) => {
       as: 'contents',
       where: { type },
     }, {
-      model: models.PostStat,
-      as: 'stat',
+      model: models.PostMeta,
+      as: 'meta',
     }],
   });
 
   if (existed) {
-    await models.PostStat.increment('pageview', {
+    await models.PostMeta.increment('pageview', {
       by: 1,
       where: { postId: existed.id },
     });
@@ -182,14 +183,14 @@ exports.getByPermalink = async (permalink, type = Const.POST_FMT.HTML) => {
       as: 'contents',
       where: { type },
     }, {
-      model: models.PostStat,
-      as: 'stat',
+      model: models.PostMeta,
+      as: 'meta',
     }],
     where: { permalink },
   });
 
   if (existed) {
-    await models.PostStat.increment('pageview', {
+    await models.PostMeta.increment('pageview', {
       by: 1,
       where: { postId: existed.id },
     });

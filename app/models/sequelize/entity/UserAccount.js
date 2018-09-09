@@ -28,14 +28,6 @@ module.exports = (Sequelize, DataTypes) => {
       type: DataTypes.STRING(64),
       allowNull: false,
     },
-    lastLoginIp: {
-      type: DataTypes.STRING(64),
-      field: 'last_login_ip',
-    },
-    lastLoginTime: {
-      type: DataTypes.DATE,
-      field: 'last_login_time',
-    },
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,

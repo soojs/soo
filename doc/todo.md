@@ -14,3 +14,4 @@ permalink: todolist
   - 创建文章的时候，如果不是发布态，不要一起创建统计信息  
   - 用户的`lastLoginIp`和`lastLoginTime`两个字段提取出来，做新表记录  
 + 小程序端  
++ 打包发布策略

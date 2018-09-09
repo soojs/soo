@@ -32,13 +32,13 @@ describe('test/api/post.test.js', () => {
 
       const post1 = await PostService.getById(tempPostId);
       assert(post1 !== null);
-      assert(post1.stat !== null);
+      assert(post1.meta !== null);
 
       const post2 = await PostService.getById(tempPostId);
       assert(post2 !== null);
-      assert(post2.stat != null);
+      assert(post2.meta != null);
 
-      assert(post2.stat.pageview === post1.stat.pageview + 1);
+      assert(post2.meta.pageview === post1.meta.pageview + 1);
     });
   });
 
@@ -46,13 +46,13 @@ describe('test/api/post.test.js', () => {
     it('should return the existed data and increase pageview count', async () => {
       const post1 = await PostService.getByPermalink(tempPostPermalink);
       assert(post1 !== null);
-      assert(post1.stat !== null);
+      assert(post1.meta !== null);
 
       const post2 = await PostService.getByPermalink(tempPostPermalink);
       assert(post2 !== null);
-      assert(post2.stat != null);
+      assert(post2.meta != null);
 
-      assert(post2.stat.pageview === post1.stat.pageview + 1);
+      assert(post2.meta.pageview === post1.meta.pageview + 1);
     });
   });
 
