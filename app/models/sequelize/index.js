@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('config');
 const Sequelize = require('sequelize');
-const cls = require('continuation-local-storage');
+const cls = require('cls-hooked'); // cannot use cls, because have problem when using async/await
 
 const namespace = cls.createNamespace('bee-blog');
 Sequelize.useCLS(namespace);

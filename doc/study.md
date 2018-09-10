@@ -34,6 +34,9 @@ A: 最终选择了`eggjs`推荐的`mocha`和`power-assert`，但是`power-assert
 Q: 为什么需要发布时间
 A: 更新时间是给内容编辑用的，用于比较距离上一次是否由更新过内容；但是发布时间一旦发布就不会变的；
 
+Q: 严重bug，cls在async/await下是有问题的，不能hook
+A: https://github.com/othiym23/node-continuation-local-storage/issues/98#issuecomment-323503807
+
 参考：  
 + (JerryQu's blog)[https://imququ.com/post/readme.html]
 
