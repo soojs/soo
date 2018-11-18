@@ -22,5 +22,12 @@ module.exports = (Sequelize, DataTypes) => {
     version: false,
   });
 
+  Tag.associate = (models) => {
+    Tag.hasMany(models.TagPost, {
+      as: 'posts',
+      foreignKey: 'tagId',
+    });
+  };
+
   return Tag;
 };

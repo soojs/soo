@@ -23,4 +23,7 @@ router.post('/v1/user/login', v1.user.login);
 
 router.post('/v1/file/upload', auth, v1.file.upload);
 
+router.get('/v1/tag/', v1.tag.list);
+router.post('/v1/tag', v1.tag.create);
+
 module.exports = router;
