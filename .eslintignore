@@ -1,2 +1,3 @@
 coverage
 ecosystem.config.js
+app/public/**
