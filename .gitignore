@@ -3,7 +3,6 @@
 .nyc_output
 npm-debug.log
 
-_post
 config/production.json
 log/
 node_modules/
