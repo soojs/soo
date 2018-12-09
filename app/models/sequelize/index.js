@@ -1,18 +1,20 @@
-const debug = require('debug')('bee-blog:model');
 const fs = require('fs');
 const path = require('path');
 const config = require('config');
+const log4js = require('log4js');
 const Sequelize = require('sequelize');
 const cls = require('cls-hooked'); // cannot use cls, because have problem when using async/await
 
 const namespace = cls.createNamespace('bee-blog');
 Sequelize.useCLS(namespace);
 
+const log = log4js.getLogger('startup');
 const dbConfig = config.get('db');
 if (dbConfig.logging === undefined && process.env.NODE_ENV === 'development') {
-  dbConfig.logging = console.log; // eslint-disable-line no-console
+  // eslint-disable-next-line no-console
+  dbConfig.logging = console.log;
 }
-debug('Connecting to database: host=%s, database=%s', dbConfig.host, dbConfig.database);
+log.info('Connecting to database: host=%s, database=%s', dbConfig.host, dbConfig.database);
 
 const client = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
   dialectOptions: {
@@ -41,6 +43,7 @@ fs.readdirSync(dir)
   })
   .forEach((file) => {
     const model = client.import(path.join(dir, file));
+    log.debug('import model %s', model.name);
     entities[model.name] = model;
   });
 

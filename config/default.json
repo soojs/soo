@@ -1,6 +1,5 @@
 {
   "app": {
-    "logdir": "/var/logs/beeblog/",
     "keys": "some secret hurr",
     "admin": {
       "context": "/__happy6__"
