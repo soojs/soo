@@ -1,4 +1,4 @@
-const { PostService } = require('../services');
+const { PostService } = require('../service');
 const Const = require('../common/const');
 
 exports.rss = async (ctx) => {

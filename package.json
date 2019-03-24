@@ -12,18 +12,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.coding.net/jerrydot0/fe-blog-www.git"
+    "url": "https://github.com/happysix/bee-blog.git"
   },
   "keywords": [
     "blog",
     "koa",
     "koajs"
   ],
+  "author": "jerrydotlam@gmail.com",
   "license": "MIT",
   "dependencies": {
     "ali-oss": "^5.0.0",
     "async-busboy": "^0.6.2",
-    "bcrypt": "^3.0.2",
+    "bcrypt": "^3.0.5",
     "cls-hooked": "^4.2.2",
     "co": "^4.6.0",
     "config": "^1.27.0",

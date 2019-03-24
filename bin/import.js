@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('yaml-front-matter');
 
-const models = require('../app/models');
-const { PostService } = require('../app/services');
+const model = require('../app/model');
+const { PostService } = require('../app/service');
 
 const args = process.argv.splice(2);
 args.forEach((item) => {
@@ -32,10 +32,10 @@ args.forEach((item) => {
       return JSON.stringify(created);
     }).then((resp) => {
       console.log('导入成功：', resp);
-      models.client.close();
+      model.client.close();
     }).catch((err) => {
       console.error('导入失败：', err);
-      models.client.close();
+      model.client.close();
     });
   });
 });

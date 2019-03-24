@@ -2,20 +2,20 @@ const Koa = require('koa');
 const config = require('config');
 const log4js = require('log4js');
 
-const routers = require('./routers');
-const middlewares = require('./middlewares');
+const router = require('./router');
+const middleware = require('./middleware');
 
 const app = new Koa();
 const log = log4js.getLogger('app');
 
 app.keys = [config.get('app.keys')];
-app.use(middlewares.logger());
-app.use(middlewares.static());
-app.use(middlewares.helmet());
-app.use(middlewares.bodyParser());
-app.use(middlewares.session(app));
-app.use(middlewares.render());
-app.use(middlewares.minify());
+app.use(middleware.logger());
+app.use(middleware.static());
+app.use(middleware.helmet());
+app.use(middleware.bodyParser());
+app.use(middleware.session(app));
+app.use(middleware.render());
+app.use(middleware.minify());
 
 // error handler, must before routers
 // so that can catch all business exception
@@ -30,6 +30,6 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.use(routers.routes());
+app.use(router.routes());
 
 module.exports = app;

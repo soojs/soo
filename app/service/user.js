@@ -2,7 +2,7 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const Const = require('../common/const');
 const ServiceError = require('../common/ServiceError');
-const models = require('../models');
+const model = require('../model');
 
 exports.create = async (user) => {
   const existed = await this.getByUsername(user.username);
@@ -10,7 +10,7 @@ exports.create = async (user) => {
     throw new ServiceError(Const.ERROR.USER_EXIST, 'User existed');
   }
   const encryptedPassword = await bcrypt.hash(user.password, Const.SALT_ROUNDS);
-  const created = await models.User.create({
+  const created = await model.User.create({
     username: user.username,
     password: encryptedPassword,
     salt: '',
@@ -23,7 +23,7 @@ exports.create = async (user) => {
 };
 
 exports.getByUsername = async (username) => {
-  const existed = await models.User.findOne({
+  const existed = await model.User.findOne({
     where: { username },
     attributes: ['id', 'username', 'nickname', 'createAt', 'updateAt'],
   });
@@ -31,7 +31,7 @@ exports.getByUsername = async (username) => {
 };
 
 exports.updatePassword = async (username, oldPlainPassword, newPlainPassword) => {
-  const existed = await models.User.findOne({
+  const existed = await model.User.findOne({
     where: { username },
   });
   if (existed === null) {
@@ -51,7 +51,7 @@ exports.updatePassword = async (username, oldPlainPassword, newPlainPassword) =>
 };
 
 exports.checkPassword = async (username, plainPassword) => {
-  const existed = await models.User.findOne({
+  const existed = await model.User.findOne({
     where: { username },
   });
   if (existed === null) {
@@ -72,7 +72,7 @@ exports.checkPassword = async (username, plainPassword) => {
  * @return {number} 删除的数量
  */
 exports.remove = async (username) => {
-  const deleted = await models.User.destroy({
+  const deleted = await model.User.destroy({
     where: { username },
   });
   return deleted;
@@ -97,6 +97,6 @@ exports.getUsers = async (
       options.where.status = filters.status;
     }
   }
-  const page = await models.User.findAndCountAll(options);
+  const page = await model.User.findAndCountAll(options);
   return page;
 };

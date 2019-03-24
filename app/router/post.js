@@ -1,5 +1,5 @@
 const router = require('koa-router')();
-const controller = require('../controllers').post;
+const controller = require('../controller').post;
 
 router.all('', controller.list);
 router.all('rss.xml', controller.rss);

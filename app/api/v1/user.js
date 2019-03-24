@@ -1,4 +1,4 @@
-const { UserService } = require('../../services');
+const { UserService } = require('../../service');
 const { getApiResult } = require('../../lib/helper');
 const Const = require('../../common/const');
 

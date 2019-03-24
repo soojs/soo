@@ -1,7 +1,7 @@
 const assert = require('power-assert');
 const helper = require('../../app/lib/helper');
 const Const = require('../../app/common/const');
-const { UserService } = require('../../app/services');
+const { UserService } = require('../../app/service');
 
 describe('test/api/user.test.js', () => {
   const tempUsername = 'temp';

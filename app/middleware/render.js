@@ -5,7 +5,7 @@ const appInfo = require('../app.json');
 const { timeFormat } = require('../lib/helper');
 
 module.exports = () =>
-  views(path.join(__dirname, '/../views'), {
+  views(path.join(__dirname, '/../view'), {
     map: {
       ejs: 'ejs',
     },

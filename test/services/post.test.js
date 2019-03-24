@@ -1,7 +1,7 @@
 const assert = require('power-assert');
 const helper = require('../../app/lib/helper');
 const Const = require('../../app/common/const');
-const { PostService } = require('../../app/services');
+const { PostService } = require('../../app/service');
 
 describe('test/api/post.test.js', () => {
   const tempPostTitle = '您好啊，title';

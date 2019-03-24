@@ -1,7 +1,7 @@
 const _ = require('lodash');
-const models = require('../models');
+const model = require('../model');
 
-const { Op } = models.client;
+const { Op } = model.client;
 /**
  * 分页获取tag列表
  * @param {object} param0 分页参数：`{plimit: 10, poffset: 0}`
@@ -18,7 +18,7 @@ exports.getTags = async (
   if (includeCount) {
     // TODO 统计总数
   }
-  const list = await models.Tag.findAll(options);
+  const list = await model.Tag.findAll(options);
   return list;
 };
 /**
@@ -27,15 +27,15 @@ exports.getTags = async (
  * @param {boolean} includeCount 是否统计每个tag所包含的post总数
  */
 exports.getReadableTags = async ({ plimit, poffset }) => {
-  const list = await models.TagPost.findAll({
+  const list = await model.TagPost.findAll({
     limit: Math.min(plimit || 50, 50),
     offset: Math.max(poffset || 0, 0),
     group: ['tagId'],
     attributes: [
       'tagId',
-      [models.client.fn('COUNT', 'tagId'), 'count'],
+      [model.client.fn('COUNT', 'tagId'), 'count'],
     ],
-    having: models.client.literal('count(1) > 0'),
+    having: model.client.literal('count(1) > 0'),
   });
   const ids = [];
   const map = {};
@@ -43,7 +43,7 @@ exports.getReadableTags = async ({ plimit, poffset }) => {
     ids.push(item.id);
     map[item.id] = item.count;
   });
-  const tags = await models.Tag.findAll({
+  const tags = await model.Tag.findAll({
     where: {
       id: { [Op.in]: ids },
     },
@@ -60,7 +60,7 @@ exports.getReadableTags = async ({ plimit, poffset }) => {
  */
 // eslint-disable-next-line no-underscore-dangle
 exports._batchDeleteByTagId = async (tagId) => {
-  const result = await models.TagPost.destroy({
+  const result = await model.TagPost.destroy({
     where: {
       tagId: { [Op.eq]: tagId },
     },
@@ -74,22 +74,22 @@ exports._batchDeleteByTagId = async (tagId) => {
  */
 // eslint-disable-next-line no-underscore-dangle
 exports._batchDeleteByPostId = async (postId) => {
-  const result = await models.TagPost.destroy({
+  const result = await model.TagPost.destroy({
     where: {
       postId: { [Op.eq]: postId },
     },
   });
   return result;
-  // const existed = await models.TagPost.findAll({
+  // const existed = await model.TagPost.findAll({
   //   where: { postId },
   //   // include: [{
-  //   //   model: models.Tag,
+  //   //   model: model.Tag,
   //   //   as: 'tag',
   //   // }],
   // });
   // if (existed && existed.length > 0) {
   //   const tagIds = _.map(existed, item => item.tagId);
-  //   await models.Tag.destroy({
+  //   await model.Tag.destroy({
   //     where: { id: { [Op.in]: tagIds } },
   //   });
   // }
@@ -100,11 +100,11 @@ exports._batchCreate = async (postId, tags) => {
   const values = _.map(tags, item => ({
     name: item,
   }));
-  await models.Tag.bulkCreate(values, {
+  await model.Tag.bulkCreate(values, {
     updateOnDuplicate: ['name'], // only supported by mysql
   });
   // how egg pain!
-  const savedTags = await models.Tag.findAll({
+  const savedTags = await model.Tag.findAll({
     where: {
       name: { [Op.in]: tags },
     },
@@ -114,7 +114,7 @@ exports._batchCreate = async (postId, tags) => {
     postId,
   }));
   await this._batchDeleteByPostId(postId);
-  const result = await models.TagPost.bulkCreate(tagPosts);
+  const result = await model.TagPost.bulkCreate(tagPosts);
   return result;
 };
 
@@ -122,6 +122,6 @@ exports.batchCreate = async ({ postId, tags }) => {
   if (!postId || !tags || !tags.length) {
     return [];
   }
-  const result = await models.client.transaction(() => this._batchCreate(postId, tags));
+  const result = await model.client.transaction(() => this._batchCreate(postId, tags));
   return result;
 };

@@ -1,4 +1,4 @@
-const { PostService } = require('../../services');
+const { PostService } = require('../../service');
 const { getApiResult } = require('../../lib/helper');
 
 exports.list = async (ctx) => {

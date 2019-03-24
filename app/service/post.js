@@ -2,10 +2,10 @@ const _ = require('lodash');
 const Const = require('../common/const');
 const ServiceError = require('../common/ServiceError');
 const helper = require('../lib/helper');
-const models = require('../models');
+const model = require('../model');
 
 exports.ncreate = async (post) => {
-  const created = await models.Post.create({
+  const created = await model.Post.create({
     tags: post.tags,
     desc: post.desc,
     title: post.title,
@@ -21,7 +21,7 @@ exports.ncreate = async (post) => {
     content: post.content,
     type: Const.POST_FMT.MARKDOWN,
   };
-  const createdMdContent = await models.PostContent.create(mdContent);
+  const createdMdContent = await model.PostContent.create(mdContent);
   if (createdMdContent) {
     const contents = [];
     contents.push(createdMdContent);
@@ -33,19 +33,19 @@ exports.ncreate = async (post) => {
 exports.create = async (post) => {
   // 如果设置了永久链接，要判断唯一性
   if (post.permalink) {
-    const existed = await models.Post.findOne({
+    const existed = await model.Post.findOne({
       where: { permalink: post.permalink },
     });
     if (existed) {
       throw new ServiceError(Const.ERROR.POST_EXIST, 'Post existed');
     }
   }
-  const created = await models.client.transaction(() => this.ncreate(post));
+  const created = await model.client.transaction(() => this.ncreate(post));
   return created;
 };
 
 exports.nupdate = async (id, post) => {
-  const existed = await models.Post.findById(id);
+  const existed = await model.Post.findById(id);
   if (existed === null) {
     return existed;
   }
@@ -58,8 +58,8 @@ exports.nupdate = async (id, post) => {
   existed.updateAt = _.now();
   const updated = await existed.save();
 
-  const { Op } = models.client;
-  const contents = await models.PostContent.findAll({
+  const { Op } = model.client;
+  const contents = await model.PostContent.findAll({
     where: {
       postId: { [Op.eq]: updated.id },
       type: { [Op.in]: [Const.POST_FMT.MARKDOWN, Const.POST_FMT.HTML] },
@@ -81,14 +81,14 @@ exports.nupdate = async (id, post) => {
 };
 
 exports.update = async (id, post) => {
-  const updated = await models.client.transaction(() => this.nupdate(id, post));
+  const updated = await model.client.transaction(() => this.nupdate(id, post));
   return updated;
 };
 
 exports.npublish = async (id) => {
-  const existed = await models.Post.findById(id, {
+  const existed = await model.Post.findById(id, {
     include: [{
-      model: models.PostContent,
+      model: model.PostContent,
       as: 'contents',
       where: { type: Const.POST_FMT.MARKDOWN },
     }],
@@ -116,8 +116,8 @@ exports.npublish = async (id) => {
     type: Const.POST_FMT.HTML,
   };
   const [createdMeta, createdHtmlContent] = await Promise.all([
-    models.PostMeta.create(meta),
-    models.PostContent.create(htmlContnet),
+    model.PostMeta.create(meta),
+    model.PostContent.create(htmlContnet),
   ]);
   if (createdMeta) {
     updated.meta = createdMeta;
@@ -131,19 +131,19 @@ exports.npublish = async (id) => {
 };
 
 exports.publish = async (id) => {
-  const updated = await models.client.transaction(() => this.npublish(id));
+  const updated = await model.client.transaction(() => this.npublish(id));
   return updated;
 };
 
 exports.nremove = async (id) => {
-  const result = await models.Post.destroy({
+  const result = await model.Post.destroy({
     where: { id },
   });
   if (result > 0) {
-    await models.PostContent.destroy({
+    await model.PostContent.destroy({
       where: { postId: id },
     });
-    await models.PostMeta.destroy({
+    await model.PostMeta.destroy({
       where: { postId: id },
     });
   }
@@ -151,7 +151,7 @@ exports.nremove = async (id) => {
 };
 
 exports.remove = async (id) => {
-  const result = await models.client.transaction(() => this.nremove(id));
+  const result = await model.client.transaction(() => this.nremove(id));
   return result;
 };
 
@@ -164,31 +164,31 @@ exports.remove = async (id) => {
 exports.get = async (key, value, contentType = Const.POST_FMT.HTML) => {
   const options = {
     include: [{
-      model: models.User,
+      model: model.User,
       as: 'user',
       attributes: ['id', 'nickname'],
     }, {
-      model: models.PostMeta,
+      model: model.PostMeta,
       as: 'meta',
     }],
   };
   let existed = null;
   if (key === 'id') {
-    existed = await models.Post.findById(value, options);
+    existed = await model.Post.findById(value, options);
   } else {
     options.where = { permalink: value };
-    existed = await models.Post.findOne(options);
+    existed = await model.Post.findOne(options);
   }
   if (existed) {
     // 不能关联查询，否则如果查询html类型的内容会查不到数据(inner join)
-    const contents = await models.PostContent.findAll({
+    const contents = await model.PostContent.findAll({
       where: { postId: existed.id, type: contentType },
     });
     existed.contents = contents;
   }
   // 只有已经发布的才有pageview
   if (existed && existed.status === Const.POST_STATUS.RELEASE) {
-    await models.PostMeta.increment('pageview', {
+    await model.PostMeta.increment('pageview', {
       by: 1,
       where: { postId: existed.id },
     });
@@ -239,12 +239,12 @@ exports.getPosts = async (
   }
   if (includes && includes.includeUser) {
     options.include.push({
-      model: models.User,
+      model: model.User,
       as: 'user',
       attributes: ['id', 'nickname'],
     });
   }
-  const page = await models.Post.findAndCountAll(options);
+  const page = await model.Post.findAndCountAll(options);
   return page;
 };
 /**
@@ -260,24 +260,24 @@ exports.getPostsByRss = async (
     limit: 20,
     offset: 0,
     where: { status: Const.POST_STATUS.RELEASE },
-    order: [[models.client.literal('publishAt DESC')]],
+    order: [[model.client.literal('publishAt DESC')]],
     distinct: true,
     include: [],
   };
   if (includeUser) {
     options.include.push({
-      model: models.User,
+      model: model.User,
       as: 'user',
       attributes: ['id', 'nickname'],
     });
   }
   if (includeContents) {
     options.include.push({
-      model: models.PostContent,
+      model: model.PostContent,
       as: 'contents',
       where: { type: Const.POST_FMT.HTML },
     });
   }
-  const list = await models.Post.findAll(options);
+  const list = await model.Post.findAll(options);
   return list;
 };

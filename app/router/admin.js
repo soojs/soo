@@ -1,5 +1,5 @@
 const router = require('koa-router')();
-const controller = require('../controllers').admin;
+const controller = require('../controller').admin;
 
 router.get('/login', controller.login);
 router.get('/admin', controller.admin);

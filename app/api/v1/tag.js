@@ -1,4 +1,4 @@
-const { TagService } = require('../../services');
+const { TagService } = require('../../service');
 const { getApiResult } = require('../../lib/helper');
 
 exports.create = async (ctx) => {
