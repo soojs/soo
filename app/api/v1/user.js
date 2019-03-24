@@ -1,6 +1,6 @@
 const { UserService } = require('../../service');
 const { getApiResult } = require('../../lib/helper');
-const Const = require('../../common/const');
+const Constant = require('../../common/Constant');
 
 exports.list = async (ctx) => {
   const { limit, offset } = ctx.request.query;
@@ -42,7 +42,7 @@ exports.login = async (ctx) => {
       ctx.session.authenticated = true;
       ctx.body = getApiResult(user);
     } else {
-      ctx.body = getApiResult(null, Const.ERROR.USER_AUTH_FAIL);
+      ctx.body = getApiResult(null, Constant.ERROR.USER_AUTH_FAIL);
     }
   } catch (e) {
     ctx.body = getApiResult(e.message, e.code);

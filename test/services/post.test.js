@@ -1,6 +1,6 @@
 const assert = require('power-assert');
 const helper = require('../../app/lib/helper');
-const Const = require('../../app/common/const');
+const Constant = require('../../app/common/Constant');
 const { PostService } = require('../../app/service');
 
 describe('test/api/post.test.js', () => {
@@ -99,7 +99,7 @@ describe('test/api/post.test.js', () => {
       tempPostId = created.id;
 
       // assert markdown content
-      const post2 = await PostService.getById(tempPostId, Const.POST_FMT.MARKDOWN);
+      const post2 = await PostService.getById(tempPostId, Constant.POST_FMT.MARKDOWN);
       assert(post2 !== null);
       assert(post2.title === post.title);
       assert(post2.contents.length > 0);
@@ -132,7 +132,7 @@ describe('test/api/post.test.js', () => {
       }
 
       // assert markdown content
-      const post2 = await PostService.getById(tempPostId, Const.POST_FMT.MARKDOWN);
+      const post2 = await PostService.getById(tempPostId, Constant.POST_FMT.MARKDOWN);
       assert(post2 !== null);
       assert(post2.title === post.title);
       assert(post2.contents.length > 0);
@@ -148,7 +148,7 @@ describe('test/api/post.test.js', () => {
         title: tempPostTitle,
         content: tempPostContent,
       });
-      assert(created.status === Const.POST_STATUS.DRAFT);
+      assert(created.status === Constant.POST_STATUS.DRAFT);
       tempPostId = created.id;
     });
     after(async () => {
@@ -157,7 +157,7 @@ describe('test/api/post.test.js', () => {
 
     it('should update post and return the updated data with status 1', async () => {
       const updated = await PostService.publish(tempPostId);
-      assert(updated.status === Const.POST_STATUS.RELEASE);
+      assert(updated.status === Constant.POST_STATUS.RELEASE);
     });
   });
 });

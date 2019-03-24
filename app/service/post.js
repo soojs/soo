@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const Const = require('../common/const');
+const Constant = require('../common/Constant');
 const ServiceError = require('../common/ServiceError');
 const helper = require('../lib/helper');
 const model = require('../model');
@@ -11,7 +11,7 @@ exports.ncreate = async (post) => {
     title: post.title,
     summary: helper.extractSummary(post.content),
     permalink: post.permalink,
-    status: Const.POST_STATUS.DRAFT,
+    status: Constant.POST_STATUS.DRAFT,
     createBy: post.createBy,
     createAt: _.now(),
   });
@@ -19,7 +19,7 @@ exports.ncreate = async (post) => {
   const mdContent = {
     postId: created.id,
     content: post.content,
-    type: Const.POST_FMT.MARKDOWN,
+    type: Constant.POST_FMT.MARKDOWN,
   };
   const createdMdContent = await model.PostContent.create(mdContent);
   if (createdMdContent) {
@@ -37,7 +37,7 @@ exports.create = async (post) => {
       where: { permalink: post.permalink },
     });
     if (existed) {
-      throw new ServiceError(Const.ERROR.POST_EXIST, 'Post existed');
+      throw new ServiceError(Constant.ERROR.POST_EXIST, 'Post existed');
     }
   }
   const created = await model.client.transaction(() => this.ncreate(post));
@@ -62,15 +62,15 @@ exports.nupdate = async (id, post) => {
   const contents = await model.PostContent.findAll({
     where: {
       postId: { [Op.eq]: updated.id },
-      type: { [Op.in]: [Const.POST_FMT.MARKDOWN, Const.POST_FMT.HTML] },
+      type: { [Op.in]: [Constant.POST_FMT.MARKDOWN, Constant.POST_FMT.HTML] },
     },
   });
   if (contents && contents.length > 0) {
     /* eslint-disable no-param-reassign */
     contents.forEach((item) => {
-      if (item.type === Const.POST_FMT.MARKDOWN) {
+      if (item.type === Constant.POST_FMT.MARKDOWN) {
         item.content = post.content;
-      } else if (item.type === Const.POST_FMT.HTML) {
+      } else if (item.type === Constant.POST_FMT.HTML) {
         item.content = helper.markdown2html(post.content);
       }
     });
@@ -90,13 +90,13 @@ exports.npublish = async (id) => {
     include: [{
       model: model.PostContent,
       as: 'contents',
-      where: { type: Const.POST_FMT.MARKDOWN },
+      where: { type: Constant.POST_FMT.MARKDOWN },
     }],
   });
   if (existed === null) {
     return existed;
   }
-  existed.status = Const.POST_STATUS.RELEASE;
+  existed.status = Constant.POST_STATUS.RELEASE;
   existed.publishAt = _.now();
   const updated = await existed.save();
 
@@ -113,7 +113,7 @@ exports.npublish = async (id) => {
   const htmlContnet = {
     postId: updated.id,
     content: helper.markdown2html(existed.content),
-    type: Const.POST_FMT.HTML,
+    type: Constant.POST_FMT.HTML,
   };
   const [createdMeta, createdHtmlContent] = await Promise.all([
     model.PostMeta.create(meta),
@@ -161,7 +161,7 @@ exports.remove = async (id) => {
  * @param {string} value 过滤字段值
  * @param {number} contentType 要获取的内容类型
  */
-exports.get = async (key, value, contentType = Const.POST_FMT.HTML) => {
+exports.get = async (key, value, contentType = Constant.POST_FMT.HTML) => {
   const options = {
     include: [{
       model: model.User,
@@ -187,7 +187,7 @@ exports.get = async (key, value, contentType = Const.POST_FMT.HTML) => {
     existed.contents = contents;
   }
   // 只有已经发布的才有pageview
-  if (existed && existed.status === Const.POST_STATUS.RELEASE) {
+  if (existed && existed.status === Constant.POST_STATUS.RELEASE) {
     await model.PostMeta.increment('pageview', {
       by: 1,
       where: { postId: existed.id },
@@ -200,7 +200,7 @@ exports.get = async (key, value, contentType = Const.POST_FMT.HTML) => {
  * @param {string} id 主键
  * @param {number} contentType 要获取的内容类型
  */
-exports.getById = async (id, contentType = Const.POST_FMT.HTML) => {
+exports.getById = async (id, contentType = Constant.POST_FMT.HTML) => {
   const existed = await this.get('id', id, contentType);
   return existed;
 };
@@ -209,7 +209,7 @@ exports.getById = async (id, contentType = Const.POST_FMT.HTML) => {
  * @param {String} permalink 永久链接
  * @param {Number} contentType 要获取的内容类型
  */
-exports.getByPermalink = async (permalink, contentType = Const.POST_FMT.HTML) => {
+exports.getByPermalink = async (permalink, contentType = Constant.POST_FMT.HTML) => {
   const existed = await this.get('permalink', permalink, contentType);
   return existed;
 };
@@ -222,7 +222,7 @@ exports.getByPermalink = async (permalink, contentType = Const.POST_FMT.HTML) =>
  */
 exports.getPosts = async (
   { plimit, poffset },
-  filters = { status: Const.POST_STATUS.RELEASE },
+  filters = { status: Constant.POST_STATUS.RELEASE },
   includes = { includeUser: true },
 ) => {
   const options = {
@@ -259,7 +259,7 @@ exports.getPostsByRss = async (
   const options = {
     limit: 20,
     offset: 0,
-    where: { status: Const.POST_STATUS.RELEASE },
+    where: { status: Constant.POST_STATUS.RELEASE },
     order: [[model.client.literal('publishAt DESC')]],
     distinct: true,
     include: [],
@@ -275,7 +275,7 @@ exports.getPostsByRss = async (
     options.include.push({
       model: model.PostContent,
       as: 'contents',
-      where: { type: Const.POST_FMT.HTML },
+      where: { type: Constant.POST_FMT.HTML },
     });
   }
   const list = await model.Post.findAll(options);

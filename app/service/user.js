@@ -1,21 +1,21 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-const Const = require('../common/const');
+const Constant = require('../common/Constant');
 const ServiceError = require('../common/ServiceError');
 const model = require('../model');
 
 exports.create = async (user) => {
   const existed = await this.getByUsername(user.username);
   if (existed) {
-    throw new ServiceError(Const.ERROR.USER_EXIST, 'User existed');
+    throw new ServiceError(Constant.ERROR.USER_EXIST, 'User existed');
   }
-  const encryptedPassword = await bcrypt.hash(user.password, Const.SALT_ROUNDS);
+  const encryptedPassword = await bcrypt.hash(user.password, Constant.SALT_ROUNDS);
   const created = await model.User.create({
     username: user.username,
     password: encryptedPassword,
     salt: '',
     nickname: user.nickname || user.username,
-    roles: user.roles || Const.ROLES.ANONY,
+    roles: user.roles || Constant.ROLES.ANONY,
     createBy: user.createBy,
     createAt: _.now(),
   });
@@ -35,13 +35,13 @@ exports.updatePassword = async (username, oldPlainPassword, newPlainPassword) =>
     where: { username },
   });
   if (existed === null) {
-    throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found');
+    throw new ServiceError(Constant.ERROR.USER_NOT_FOUND, 'User not found');
   }
   const res = await bcrypt.compare(oldPlainPassword, existed.password);
   if (!res) {
-    throw new ServiceError(Const.ERROR.USER_AUTH_FAIL, 'User auth fail');
+    throw new ServiceError(Constant.ERROR.USER_AUTH_FAIL, 'User auth fail');
   }
-  const encryptedPassword = await bcrypt.hash(newPlainPassword, Const.SALT_ROUNDS);
+  const encryptedPassword = await bcrypt.hash(newPlainPassword, Constant.SALT_ROUNDS);
   existed.password = encryptedPassword;
   const updated = await existed.save();
   const user = updated.get({ plain: true });
@@ -55,11 +55,11 @@ exports.checkPassword = async (username, plainPassword) => {
     where: { username },
   });
   if (existed === null) {
-    throw new ServiceError(Const.ERROR.USER_NOT_FOUND, 'User not found');
+    throw new ServiceError(Constant.ERROR.USER_NOT_FOUND, 'User not found');
   }
   const res = await bcrypt.compare(plainPassword, existed.password);
   if (!res) {
-    throw new ServiceError(Const.ERROR.USER_AUTH_FAIL, 'User auth fail');
+    throw new ServiceError(Constant.ERROR.USER_AUTH_FAIL, 'User auth fail');
   }
   const user = existed.get({ plain: true });
   delete user.salt;
@@ -80,7 +80,7 @@ exports.remove = async (username) => {
 
 exports.getUsers = async (
   { plimit, poffset },
-  filters = { status: Const.USER_STATUS.NORMAL },
+  filters = { status: Constant.USER_STATUS.NORMAL },
 ) => {
   const options = {
     limit: Math.min(plimit || 10, 10),

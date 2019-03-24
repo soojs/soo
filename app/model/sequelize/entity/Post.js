@@ -1,4 +1,4 @@
-const Const = require('../../../common/const');
+const Constant = require('../../../common/Constant');
 
 /**
  * 文章对象
@@ -81,7 +81,7 @@ module.exports = (Sequelize, DataTypes) => {
           const contents = this.getDataValue('contents');
           if (contents && contents.length > 0) {
             contents.every((item) => {
-              if (item.type === Const.POST_FMT.HTML) {
+              if (item.type === Constant.POST_FMT.HTML) {
                 ({ content } = item);
                 return false;
               }
