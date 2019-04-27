@@ -2,6 +2,7 @@
 .vscode
 .nyc_output
 npm-debug.log
+package-lock.json
 
 _post
 config/production.json
