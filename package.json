@@ -41,14 +41,14 @@
     "koa-session": "^5.5.0",
     "koa-static": "^4.0.2",
     "koa-views": "^6.1.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "log4js": "^3.0.6",
-    "marked": "^0.6.2",
+    "marked": "^0.8.0",
     "mkdirp": "^0.5.1",
     "morgan": "^1.9.1",
     "mysql2": "^1.4.2",
     "rotating-file-stream": "^1.3.2",
-    "sequelize": "^4.37.6",
+    "sequelize": "^4.44.3",
     "yaml-front-matter": "^3.4.0"
   },
   "devDependencies": {
