@@ -5,7 +5,7 @@ const log4js = require('log4js');
 const Sequelize = require('sequelize');
 const cls = require('cls-hooked'); // cannot use cls, because have problem when using async/await
 
-const namespace = cls.createNamespace('bee-blog');
+const namespace = cls.createNamespace('soo-blog');
 Sequelize.useCLS(namespace);
 
 const log = log4js.getLogger('startup');

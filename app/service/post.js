@@ -45,7 +45,7 @@ exports.create = async (post) => {
 };
 
 exports.nupdate = async (id, post) => {
-  const existed = await model.Post.findById(id);
+  const existed = await model.Post.findByPk(id);
   if (existed === null) {
     return existed;
   }
@@ -86,7 +86,7 @@ exports.update = async (id, post) => {
 };
 
 exports.npublish = async (id) => {
-  const existed = await model.Post.findById(id, {
+  const existed = await model.Post.findByPk(id, {
     include: [{
       model: model.PostContent,
       as: 'contents',
@@ -174,7 +174,7 @@ exports.get = async (key, value, contentType = Constant.POST_FMT.HTML) => {
   };
   let existed = null;
   if (key === 'id') {
-    existed = await model.Post.findById(value, options);
+    existed = await model.Post.findByPk(value, options);
   } else {
     options.where = { permalink: value };
     existed = await model.Post.findOne(options);

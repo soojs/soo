@@ -6,12 +6,12 @@ module.exports = {
    */
   apps : [
     {
-      name      : 'bee-blog',
+      name      : 'soo-blog',
       script    : './bin/www.js',
       instances : 0,
       exec_mode : 'cluster',
       env: {
-        DEBUG: 'bee-blog:*',
+        DEBUG: 'soo-blog:*',
         PORT: 8889,
         NODE_ENV: 'development'
       },
@@ -32,8 +32,8 @@ module.exports = {
       user : 'fxiaoke',
       host : 'firstshare.co',
       ref  : 'origin/master',
-      repo : 'git@git.coding.net:jerrydot0/bee-blog.git',
-      path : '~/pm2/bee-blog',
+      repo : 'git@git.coding.net:jerrydot0/soo-blog.git',
+      path : '~/pm2/soo-blog',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     },
     dev : {
@@ -41,8 +41,8 @@ module.exports = {
       user : 'fxiaoke',
       host : 'firstshare.co',
       ref  : 'origin/master',
-      repo : 'git@git.coding.net:jerrydot0/bee-blog.git',
-      path : '~/pm2/bee-blog-dev',
+      repo : 'git@git.coding.net:jerrydot0/soo-blog.git',
+      path : '~/pm2/soo-blog-dev',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env dev',
       env  : {
         NODE_ENV: 'dev'
