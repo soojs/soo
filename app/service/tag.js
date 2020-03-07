@@ -1,7 +1,7 @@
 const _ = require('lodash');
+const { Op } = require('sequelize');
 const model = require('../model');
 
-const { Op } = model.client;
 /**
  * 分页获取tag列表
  * @param {object} param0 分页参数：`{plimit: 10, poffset: 0}`

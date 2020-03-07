@@ -2,7 +2,7 @@
   "app": {
     "keys": "some secret hurr",
     "admin": {
-      "context": "/__happy6__"
+      "context": "/__"
     }
   },
   "debug": true,
@@ -11,12 +11,15 @@
     "port": 3306,
     "database": "soo_blog",
     "username": "soo",
-    "password": "123Qwe!@#",
+    "password": "qa123456",
     "pool": {
       "min": 0,
       "max": 5,
       "idle": 10000
     }
+  },
+  "security": {
+    "passwordSaltRounds": 10
   },
   "aliyun": {
     "oss": {

@@ -1,6 +1,6 @@
 const assert = require('power-assert');
 const helper = require('../../app/lib/helper');
-const Constant = require('../../app/common/Constant');
+const { Result, UserEnum } = require('../../app/enum');
 const { UserService } = require('../../app/service');
 
 describe('test/api/user.test.js', () => {
@@ -52,7 +52,7 @@ describe('test/api/user.test.js', () => {
           .updatePassword('unexisetedUsername', tempPassword, newPlainPassword);
         assert(updated.id > 0);
       } catch (e) {
-        assert(e.code === Constant.ERROR.USER_NOT_FOUND);
+        assert(e.code === Result.Failure.USER_NOT_FOUND);
       }
     });
     // 错误的原始密码
@@ -62,7 +62,7 @@ describe('test/api/user.test.js', () => {
           .updatePassword(tempUsername, tempPassword, newPlainPassword);
         assert(updated.id > 0);
       } catch (e) {
-        assert(e.code === Constant.ERROR.USER_AUTH_FAIL);
+        assert(e.code === Result.Failure.USER_AUTH_FAIL);
       }
     });
   });
@@ -83,7 +83,7 @@ describe('test/api/user.test.js', () => {
           .checkPassword('unexisetedUsername', tempPassword);
         assert(updated.id > 0);
       } catch (e) {
-        assert(e.code === Constant.ERROR.USER_NOT_FOUND);
+        assert(e.code === Result.Failure.USER_NOT_FOUND);
       }
     });
     // 错误的原始密码
@@ -93,7 +93,7 @@ describe('test/api/user.test.js', () => {
           .checkPassword(tempUsername, 'wraongPassword');
         assert(updated.id > 0);
       } catch (e) {
-        assert(e.code === Constant.ERROR.USER_AUTH_FAIL);
+        assert(e.code === Result.Failure.USER_AUTH_FAIL);
       }
     });
   });
@@ -113,14 +113,14 @@ describe('test/api/user.test.js', () => {
       assert(created.id > 0);
       assert(created.username === user.username);
       assert(created.password !== user.password);
-      assert(created.roles === Constant.ROLES.ANONY);
+      assert(created.roles === UserEnum.Role.ANONY);
     });
     it('should throw a ServiceError for existed username', async () => {
       try {
         const created = await UserService.create(user);
         assert(created.id > 0);
       } catch (e) {
-        assert(e.code === Constant.ERROR.USER_EXIST);
+        assert(e.code === Result.Failure.USER_CONFLICT);
       }
     });
   });

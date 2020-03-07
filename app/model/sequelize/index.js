@@ -29,7 +29,6 @@ const client = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.pass
     min: dbConfig.pool.min,
     idle: dbConfig.pool.idle,
   },
-  operatorsAliases: false,
   logging: dbConfig.logging,
 });
 
