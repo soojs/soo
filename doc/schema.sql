@@ -1,7 +1,7 @@
-# CREATE DATABASE bee_blog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+# CREATE DATABASE soo_blog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `bee_post`; 
-CREATE TABLE `bee_post` (
+DROP TABLE IF EXISTS `soo_post`; 
+CREATE TABLE `soo_post` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `tags` varchar(255) COMMENT '标签列表',
   `desc` varchar(255) COMMENT '描述，用于seo的description',
@@ -18,8 +18,8 @@ CREATE TABLE `bee_post` (
   KEY `idx_permalink` (`permalink`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章' AUTO_INCREMENT = 19491001;
 
-DROP TABLE IF EXISTS `bee_post_content`;
-CREATE TABLE `bee_post_content` (
+DROP TABLE IF EXISTS `soo_post_content`;
+CREATE TABLE `soo_post_content` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `post_id` bigint(20) NOT NULL COMMENT '文章ID',
   `content` mediumtext DEFAULT NULL COMMENT '文章内容',
@@ -27,8 +27,8 @@ CREATE TABLE `bee_post_content` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章内容' AUTO_INCREMENT = 19491001;
 
-DROP TABLE IF EXISTS `bee_post_meta`;
-CREATE TABLE `bee_post_meta` (
+DROP TABLE IF EXISTS `soo_post_meta`;
+CREATE TABLE `soo_post_meta` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `post_id` bigint(20) NOT NULL COMMENT '文章ID',
   `like` int DEFAULT 0 COMMENT '文章喜欢总数',
@@ -37,16 +37,16 @@ CREATE TABLE `bee_post_meta` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章元数据' AUTO_INCREMENT = 19491001;
 
-DROP TABLE IF EXISTS `bee_tag`;
-CREATE TABLE `bee_tag` (
+DROP TABLE IF EXISTS `soo_tag`;
+CREATE TABLE `soo_tag` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL COMMENT '标签名',
   PRIMARY KEY (`id`),
   UNIQUE KEY `udx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='标签' AUTO_INCREMENT = 19491001;
 
-DROP TABLE IF EXISTS `bee_tag_post`;
-CREATE TABLE `bee_tag_post` (
+DROP TABLE IF EXISTS `soo_tag_post`;
+CREATE TABLE `soo_tag_post` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `tag_id` bigint(20) NOT NULL,
   `post_id` bigint(20) NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE `bee_tag_post` (
   UNIQUE KEY `udx_tag_id_post_id` (`tag_id`,`post_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='标签文章关联' AUTO_INCREMENT = 19491001;
 
-DROP TABLE IF EXISTS `bee_user_account`;
-CREATE TABLE `bee_user_account` (
+DROP TABLE IF EXISTS `soo_user_account`;
+CREATE TABLE `soo_user_account` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(64) NOT NULL COMMENT '用户名',
   `password` varchar(255) NOT NULL COMMENT '用户密码',

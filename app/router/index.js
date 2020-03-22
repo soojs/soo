@@ -1,4 +1,4 @@
-const debug = require('debug')('bee-blog:route');
+const debug = require('debug')('soo-blog:route');
 const config = require('config');
 const root = require('koa-router')();
 

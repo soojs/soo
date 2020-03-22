@@ -34,7 +34,7 @@ module.exports = (Sequelize, DataTypes) => {
     paranoid: false,
     underscored: true,
     freezeTableName: true,
-    tableName: 'bee_post_meta',
+    tableName: 'soo_post_meta',
     version: false,
   });
 

@@ -2,21 +2,24 @@
   "app": {
     "keys": "some secret hurr",
     "admin": {
-      "context": "/__happy6__"
+      "context": "/__"
     }
   },
   "debug": true,
   "db": {
     "host": "localhost",
     "port": 3306,
-    "database": "bee_blog",
-    "username": "bee",
-    "password": "123Qwe!@#",
+    "database": "soo_blog",
+    "username": "soo",
+    "password": "qa123456",
     "pool": {
       "min": 0,
       "max": 5,
       "idle": 10000
     }
+  },
+  "security": {
+    "passwordSaltRounds": 10
   },
   "aliyun": {
     "oss": {

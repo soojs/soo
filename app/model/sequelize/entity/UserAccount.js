@@ -60,7 +60,7 @@ module.exports = (Sequelize, DataTypes) => {
     paranoid: false,
     underscored: true,
     freezeTableName: true,
-    tableName: 'bee_user_account',
+    tableName: 'soo_user_account',
     version: false,
   });
 

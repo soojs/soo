@@ -1,5 +1,5 @@
 const { PostService } = require('../service');
-const Constant = require('../common/Constant');
+const { PostEnum } = require('../enum');
 
 exports.rss = async (ctx) => {
   const list = await PostService.getPostsByRss();
@@ -15,7 +15,7 @@ exports.rss = async (ctx) => {
 };
 
 exports.about = async (ctx) => {
-  const post = await PostService.getByPermalink('about', Constant.POST_FMT.HTML);
+  const post = await PostService.getByPermalink('about', PostEnum.Format.HTML);
   if (post === null) {
     ctx.throw(404);
   }
@@ -70,7 +70,7 @@ exports.list = async (ctx) => {
 };
 
 exports.getById = async (ctx) => {
-  const post = await PostService.getById(ctx.params.id, Constant.POST_FMT.HTML);
+  const post = await PostService.getById(ctx.params.id, PostEnum.Format.HTML);
   if (post === null) {
     ctx.throw(404);
   }
@@ -86,7 +86,7 @@ exports.getById = async (ctx) => {
 };
 
 exports.getByPermalink = async (ctx) => {
-  const post = await PostService.getByPermalink(ctx.params.permalink, Constant.POST_FMT.HTML);
+  const post = await PostService.getByPermalink(ctx.params.permalink, PostEnum.Format.HTML);
   if (post === null) {
     ctx.throw(404);
   }

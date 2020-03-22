@@ -1,4 +1,5 @@
 const marked = require('marked');
+const { Result } = require('../enum');
 
 /**
  * 封装统一的JSON响应
@@ -6,7 +7,7 @@ const marked = require('marked');
  * @param {number} code - 响应状态码
  * @return {object} 统一的JSON对象
  */
-exports.getApiResult = (data, code = 0) => ({ code, data });
+exports.getApiResult = (data, code = Result.Success.OK) => ({ code, data });
 
 /**
  * 摘要生成算法

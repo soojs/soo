@@ -25,7 +25,7 @@ module.exports = (Sequelize, DataTypes) => {
     paranoid: false,
     underscored: true,
     freezeTableName: true,
-    tableName: 'bee_tag_post',
+    tableName: 'soo_tag_post',
     version: false,
   });
 
