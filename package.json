@@ -24,7 +24,7 @@
   "dependencies": {
     "ali-oss": "^5.0.0",
     "async-busboy": "^0.6.2",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "cls-hooked": "^4.2.2",
     "co": "^4.6.0",
     "config": "^1.27.0",
